@@ -1,11 +1,15 @@
 \usepackage{color} %include colors
 \usepackage[T1]{fontenc} %include font support
+\usepackage[utf8]{inputenc}
 \usepackage{lmodern} %make fonts look better
+\usepackage[frenchb]{babel}
 %\usepackage{garamond} %include garamond
 \usepackage{helvet} %include helvetica
 %\usepackage{xcolor,mdframed,caption} %for the box
 \usepackage{fancyhdr}
 
+%Changer le nom ``table des matières'' en ``sommaire''
+\renewcommand{\contentsname}{Sommaire}
 
 \pdfmapfile{=ggm.map}
 
@@ -14,7 +18,7 @@
 \renewcommand{\familydefault}{\sfdefault} %Set default font to sans serif - must specify where roman is used
 
 \newgeometry{margin = 1in}
-\newcommand{\callout}[1]{{\large\emph{\textcolor{cpiOrange}{#1}}}}
+\newcommand{\callout}[1]{{\large\emph{\textcolor{amuBlue}{#1}}}}
 \renewcommand{\frame}[1]{\begin{framed} {\color{black} #1} \end{framed}}
 
 %\raggedright
@@ -35,14 +39,14 @@
 \renewcommand\@maketitle{\newpage
 \newgeometry{margin = 0in}
 %\vspace{-1in}
-\includegraphics[width=3.09in]{cpistuff/CPI_logo_cmyk.jpg}
+\includegraphics[width=3.09in]{cpistuff/logo_sciences.png}
 \setlength{\fboxsep}{0pt}
 \hfill \colorbox{cpiGray}{\makebox[3.22in][r]{\shortstack[r]{\vspace{2.75in}}}}%
 %\hfill \colorbox{cpiGray}{\hspace{.25in} \parbox{2.97in}{\vspace{2.75in}}}%
 \vspace{-0.25pt}
 \setlength{\fboxsep}{10pt}
 \setlength{\fboxrule}{0pt}
-\colorbox{cpiOrange}{\makebox[8.25in][l]{\hfill \shortstack[r]{\fontsize{36}{36}\rmfamily\color{white} \@title\\%
+\colorbox{amuBlue}{\makebox[8.25in][l]{\hfill \shortstack[r]{\fontsize{36}{36}\rmfamily\color{white} \@title\\%
 \fontsize{24}{24}\rmfamily\color{white} \cpiType}}}%
 \setlength{\fboxsep}{0pt}
 \vspace{-8.5pt}
@@ -63,7 +67,7 @@
 \rhead{\rmfamily \Date}
 \lfoot{\rmfamily \cpiType}
 \rfoot{\rmfamily Page \thepage}
-{\Large \color{cpiOrange} Executive Summary}\\ \vspace{12pt}}
+{\Large \color{amuBlue} Executive Summary}\\ \vspace{12pt}}
 {\pagebreak}
 
 
@@ -91,12 +95,13 @@
 
 \definecolor{cpiOrange}{RGB}{241,85,44}
 \definecolor{cpiGray}{RGB}{106,100,100}
+\definecolor{amuBlue}{RGB}{0,101,189}
 
 \renewcommand\section{
 \@startsection {section}{1}{\z@}%
     {-3.5ex \@plus -0.1ex \@minus -.2ex}%
     {1.2ex \@plus.01ex}%
-    {\rmfamily\Large\color{cpiOrange}}}
+    {\rmfamily\Large\color{amuBlue}}}
 \renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
     {-3.25ex\@plus -0.1ex \@minus -.2ex}%
     {1.2ex \@plus .01ex}%
@@ -110,7 +115,7 @@
 %HOW THIS PART WORKS IS HIGHLY MYSTERIOUS TO ME - I STOLE IT (legally)
 
 \newenvironment{framed}% using default \FrameCommand
-  {\color{cpiOrange} \MakeFramed {\advance\hsize-\width \FrameRestore}}%
+  {\color{amuBlue} \MakeFramed {\advance\hsize-\width \FrameRestore}}%
   {\endMakeFramed}
 
 \chardef\FrameRestore=\catcode`\| % for debug
