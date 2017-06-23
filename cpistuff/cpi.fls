@@ -1,0 +1,9 @@
+PWD /run/media/aleonardi/DATA/Documents/Rapport-de-stage-M2FSI-Alter-Solutions/cpistuff
+INPUT /usr/share/texmf-dist/web2c/texmf.cnf
+INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
+INPUT cpi.sty
+OUTPUT cpi.log
+INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
+INPUT /usr/share/texmf-dist/fonts/map/fontname/texfonts.map
+OUTPUT cpi.pdf
+INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm

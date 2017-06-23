@@ -1,0 +1,12 @@
+# Fdb version 3
+["latex"] 1498222428 "example.tex" "example.dvi" "example" 1498222428
+  "example.aux" 1498222428 8 a94a2480d3289e625eea47cd1b285758 ""
+  "example.tex" 1496661870 6150 06b370cd5cb81ecac509490500dd5e2e ""
+  (generated)
+  "example.log"
+  "example.dvi"
+["pdflatex"] 1498222488 "example.tex" "example.pdf" "example" 1498222488
+  "example.tex" 1496661870 6150 06b370cd5cb81ecac509490500dd5e2e ""
+  (generated)
+  "example.log"
+  "example.pdf"

@@ -22,7 +22,7 @@
 *.out
 *.synctex.gz
 
-ancien_rapports/*
+old_reports
 tmp_files
-./ancien_rapports/*
+./old_reports/*
 ./tmp_files/*
