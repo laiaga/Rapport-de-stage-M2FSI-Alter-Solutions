@@ -2,6 +2,7 @@
  "prez-alter"
  (lambda ()
    (LaTeX-add-labels
-    "subsec:subdivisions"))
+    "fig:filiales"
+    "subsec:frame"))
  :latex)
 

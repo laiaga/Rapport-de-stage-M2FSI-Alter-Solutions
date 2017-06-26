@@ -10,6 +10,13 @@
 \usepackage{hyperref}
 \usepackage{amssymb}
 \usepackage{enumitem}
+% package de dessin de graphiques
+\usepackage{pgfplots}
+\usepackage{cpistuff/pgf-pie-0.2.1/pgf-pie}
+
+% Marquer une figure comme ``graphique'' et un tableau comme ``tableau''
+\addto\captionsfrench{\def\figurename{Graphique}}{}
+\addto\captionsfrench{\def\tablename{Tableau}}
 
 %Changer le nom ``table des matières'' en ``sommaire''
 \renewcommand{\contentsname}{Sommaire}
@@ -114,6 +121,23 @@
     {0.2ex \@plus .01ex}%
     {\MakeUppercase\small\bfseries}}
 
+  \newcommand{\slice}[4]{
+  \pgfmathparse{0.5*#1+0.5*#2}
+  \let\midangle\pgfmathresult
+
+  % slice
+  \draw[thick,fill=black!10] (0,0) -- (#1:1) arc (#1:#2:1) -- cycle;
+
+  % outer label
+  \node[label=\midangle:#4] at (\midangle:1) {};
+
+  % inner label
+  \pgfmathparse{min((#2-#1-10)/110*(-0.3),0)}
+  \let\temp\pgfmathresult
+  \pgfmathparse{max(\temp,-0.5) + 0.8}
+  \let\innerpos\pgfmathresult
+  \node at (\midangle:\innerpos) {#3};
+}
 
 %HOW THIS PART WORKS IS HIGHLY MYSTERIOUS TO ME - I STOLE IT (legally)
 
