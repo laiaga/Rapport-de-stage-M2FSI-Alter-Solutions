@@ -27,7 +27,4 @@
 *.md5
 
 
-old_reports
-tmp_files
-./old_reports/*
-./tmp_files/*
+old_reports/*
