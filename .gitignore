@@ -21,6 +21,11 @@
 *.mtc1
 *.out
 *.synctex.gz
+*.auxlock
+*.fls
+*.fdb_latexmk
+*.md5
+
 
 old_reports
 tmp_files
