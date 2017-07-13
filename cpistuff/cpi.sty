@@ -12,6 +12,7 @@
 \usepackage{enumitem}
 % package de dessin de graphiques
 \usepackage{pgf-pie}
+\usetikzlibrary{babel}
 
 % Marquer une figure comme ``graphique'' et un tableau comme ``tableau''
 \addto\captionsfrench{\def\figurename{Graphique}}{}
@@ -154,7 +155,7 @@
  % insert pre-penalties and skips
  \begingroup
  \skip@\lastskip
- \if@nobreak\else 
+ \if@nobreak\else
     \penalty9999 % updates \page parameters
     \ifdim\pagefilstretch=\z@ \ifdim\pagefillstretch=\z@
        % not infinitely stretchable, so encourage a page break here
@@ -165,9 +166,9 @@
     \penalty\z@
     % Give a stretchy breakpoint that will always be taken in preference
     % to the \penalty 9999 used to update page parameters.  The cube root
-    % of 10000/100 indicates a multiplier of 0.21545, but the maximum 
+    % of 10000/100 indicates a multiplier of 0.21545, but the maximum
     % calculated badness is really 8192, not 10000, so the multiplier
-    % is 0.2301. 
+    % is 0.2301.
     \advance\skip@ \z@ plus-.5\baselineskip
     \advance\skip@ \z@ plus-.231\height
     \advance\skip@ \z@ plus-.231\skip@
@@ -181,7 +182,7 @@
  \penalty9999 \vskip -2\baselineskip \vskip-\height
  \penalty9999 % updates \pagetotal
 |\message{After clearout, \pagetotal=\the\pagetotal, \pagegoal=\the\pagegoal. }%
- \fb@adjheight 
+ \fb@adjheight
  \setbox\@tempboxa\vbox\bgroup
    #1% Modifications to \hsize (can use \width and \height)
    \textwidth\hsize \columnwidth\hsize
@@ -193,14 +194,14 @@
      \penalty-100 % put depth into height
  \egroup
   % {\showoutput\showbox\@tempboxa}%
- \begingroup 
+ \begingroup
    \fb@put@frame\FrameCommand\FirstFrameCommand
  \endgroup
 }
 
 % \fb@put@frame takes the contents of \@tempboxa and puts all, or a piece,
 % of it on the page with a frame (\FrameCommand, \FirstFrameCommand,
-% \MidFrameCommand, or \LastFrameCommand).  It recurses until all of 
+% \MidFrameCommand, or \LastFrameCommand).  It recurses until all of
 % \@tempboxa has been used up. (\@tempboxa must have zero depth.)
 % #1 = attempted framing command, if no split
 % #2 = framing command if split
@@ -247,7 +248,7 @@
            \vskip \fb@frh \@plus\pagestretch \@minus.8\pageshrink
            \kern137sp\kern-137sp\penalty-30
            \unvbox\@tempboxa}%
-        \edef\fb@resto@set{\boxmaxdepth\the\boxmaxdepth 
+        \edef\fb@resto@set{\boxmaxdepth\the\boxmaxdepth
                            \splittopskip\the\splittopskip}%
         \boxmaxdepth\z@ \splittopskip\z@
 |       \message{Padded box of size \the\ht\@tempboxa\space split to \the\dimen@}%
@@ -257,7 +258,7 @@
 |       \toks98\expandafter{\splitbotmark}%
 |       \message{Marks are: \the\toks99, \the\toks98. }%
         \setbox\tw@\vbox{\unvbox\tw@}% natural-sized
-|       \message{Natural height of split box is \the\ht\tw@, leaving 
+|       \message{Natural height of split box is \the\ht\tw@, leaving
 |          \the\ht\@tempboxa\space remainder. }%
         % If the split-to size > (\vsize-\topskip), then set box to full size
         \begingroup
@@ -287,7 +288,7 @@
         \ifdim\lastkern=-137sp % whole box went to next page
 |          \message{box split at beginning! }%
            % need work here???
-           \egroup \fb@resto@set \eject % (\vskip for frame size was discarded) 
+           \egroup \fb@resto@set \eject % (\vskip for frame size was discarded)
            \fb@adjheight
            \fb@put@frame#1#2% INSERTED ???
         \else % Got material split off at the head
@@ -333,10 +334,10 @@
 \newdimen\fb@frw
 \newdimen\fb@frh
 \def\fb@sizeofframe#1{\begingroup
- \setbox\z@\vbox{\vskip-5in \hbox{\hskip-5in 
+ \setbox\z@\vbox{\vskip-5in \hbox{\hskip-5in
    #1{\hbox{\vrule \@height 4.7in \@depth.3in \@width 5in}}}%
    \vskip\z@skip}%
-|  \message{Measuring frame addition for \string#1 in \@currenvir\space 
+|  \message{Measuring frame addition for \string#1 in \@currenvir\space
 |    gives ht \the\ht\z@\space and wd \the\wd\z@. }%
 %{\showoutput\showbox\z@}%
  \global\fb@frw\wd\z@ \global\fb@frh\ht\z@
@@ -367,11 +368,11 @@
 \providecommand\FrameHeightAdjust{6pt}
 
 
-% \FrameRestore has parts of \@parboxrestore, performing a similar but 
-% less complete restoration of a default layouy.  See how it is used in the 
-% "settings" argument of \MakeFrame.  Though not a parameter, \hsize 
+% \FrameRestore has parts of \@parboxrestore, performing a similar but
+% less complete restoration of a default layouy.  See how it is used in the
+% "settings" argument of \MakeFrame.  Though not a parameter, \hsize
 % should be set to the desired total line width available inside the
-% frame before invoking \FrameRestore.  
+% frame before invoking \FrameRestore.
 \def\FrameRestore{%
    \let\if@nobreak\iffalse
    \let\if@noskipsec\iffalse
@@ -379,18 +380,18 @@
    \let\'\@acci\let\`\@accii\let\=\@acciii
    %  \message{FrameRestore:
    %    \@totalleftmargin=\the \@totalleftmargin,
-   %    \rightmargin=\the\rightmargin, 
+   %    \rightmargin=\the\rightmargin,
    %    \@listdepth=\the\@listdepth.  }%
    % Test if we are in a list (or list-like paragraph)
-   \ifnum \ifdim\@totalleftmargin>\z@ 1\fi  
+   \ifnum \ifdim\@totalleftmargin>\z@ 1\fi
           \ifdim\rightmargin>\z@ 1\fi
           \ifnum\@listdepth>0 1\fi 0>\z@
      %     \message{In a list: \linewidth=\the\linewidth, \@totalleftmargin=\the\@totalleftmargin,
-     %       \parshape=\the\parshape, \columnwidth=\the\columnwidth, \hsize=\the\hsize, 
+     %       \parshape=\the\parshape, \columnwidth=\the\columnwidth, \hsize=\the\hsize,
      %       \labelwidth=\the\labelwidth. }%
      \@setminipage % snug fit around the item
      % Now try to propageate changes of width from \hsize to list parameters.
-     % This is deficient, but a more advanced way to indicate modification to text 
+     % This is deficient, but a more advanced way to indicate modification to text
      % dimensions is not (yet) provided; in particular, no separate left/right
      % adjustment.
      \advance\linewidth-\columnwidth \advance\linewidth\hsize

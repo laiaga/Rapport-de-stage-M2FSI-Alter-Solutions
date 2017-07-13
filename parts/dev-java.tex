@@ -10,14 +10,12 @@ De manière intéressante, j'ai remarqué en travaillant sur le workflow des tes
 Une particularité de ce projet est qu'il s'agit d'un logiciel déjà existant qui a été récupéré par Alter Frame pour de la mise à jour et de la maintenance. L'ESN initialement en charge du projet avait perdu le contrat et mon travail a, de ce fait, été majoritairement constitué de correction de bugs et, dans une moindre mesure, d'ajout de fonctionnalités mineures (voir section~\ref{subsec:ajout}).
 
 \subsubsection{Environnement technique}
-TRANSFORMER CE QUI SUIT EN LISTE À POINTS !!
-\subsubsection{Java 7}
-Le projet étant vieux de plusieurs années déjà, il utilise la version de Java qui était en vigueur à l'époque de sa genèse à savoir Java 7.
-
-\subsubsection{Java Swing}
-Pour les mêmes raisons que Java 7, le framework utilisé pour la partie graphique de l'application est Java Swing\footnote{\url{https://fr.wikipedia.org/wiki/Swing_(Java)}}.
-
-\subsubsection{ActiveMQ}
+\begin{itemize}[label=$\bullet$]
+\item \emph{Java 7 :} Le projet étant vieux de plusieurs années déjà, il utilise la version de Java qui était en vigueur à l'époque de sa genèse à savoir Java 7.
+\item \emph{Java Swing :} Pour les mêmes raisons que Java 7, le framework utilisé pour la partie graphique de l'application est Java Swing\footnote{\url{https://en.wikipedia.org/wiki/Swing_(Java)}}.
+\item \emph{Apache ActiveMQ\footnote{\url{http://activemq.apache.org/}} :} L'outil fonctionne selon une architecture client-serveur classique et la communication entre le serveur et les différents clients se fait au-travers d'un système de queues et du système open source ActiveMQ.
+\item \emph{MyBatis :\footnote{\url{http://www.mybatis.org/mybatis-3/}}} La liaison base de données/application se fait grâce à cet ORM open source qui a la particularité de mapper des méthodes Java à des requêtes SQL\footnote{Comparaison de MyBatis à JDBC et Hiberte : \url{https://blog.zenika.com/2012/03/28/presentation-de-mybatis/}}.
+\end{itemize}
 
 \subsubsection{Fonctionnalités ajoutées}
 \label{subsec:ajout}
