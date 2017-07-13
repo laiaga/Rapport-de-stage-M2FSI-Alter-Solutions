@@ -325,7 +325,13 @@ INPUT ./images/filiales_allinone.pdf
 INPUT /usr/share/texmf-dist/fonts/tfm/adobe/helvetic/phvr8t.tfm
 INPUT parts/dev-java.tex
 INPUT parts/dev-java.tex
+INPUT images/acceuil.PNG
+INPUT ./images/acceuil.PNG
+INPUT ./images/acceuil.PNG
 INPUT /usr/share/texmf-dist/fonts/tfm/adobe/helvetic/phvro8t.tfm
+INPUT images/classeur.PNG
+INPUT ./images/classeur.PNG
+INPUT ./images/classeur.PNG
 INPUT parts/securite-ci.tex
 INPUT parts/securite-ci.tex
 INPUT /usr/share/texmf-dist/fonts/vf/adobe/helvetic/phvro8t.vf

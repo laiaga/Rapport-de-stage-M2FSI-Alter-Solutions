@@ -1,3 +1,29 @@
 \section{Sécurité \& intégration continue}
-La seconde partie de mon stage a été majoritairement consacrée à l'amélioration
-du processus de CI au sein d'Alter Frame 
+La seconde partie de mon stage a été majoritairement consacrée à l'amélioration du processus de CI au sein d'Alter Frame. Il y a beaucoup à dire sur le sujet, tant en fait que je n'ai fait qu'effleurer la surface de ce qui est possible, d'une part parce qu'il s'agit d'un secteur de l'informatique encore jeune et d'autre part parce que je me suis naturellement concentré sur l'aspect ``sécurité'' qui est loin d'être le seul intérêt de l'intégration continue.
+
+\subsection{Le contexte : GitLab-CI}
+L'intégration continue dans les projets d'Alter Frame se fait à l'aide d'un service proposé par la plateforme d'hébergement de projets informatiques GitLab\footnote{\url{https://about.gitlab.com/}}. Le service en question, GitLab-CI\footnote{\url{https://about.gitlab.com/features/gitlab-ci-cd/}}, propose de mettre en place de l'intégration continue sur les projets hébergés sur GitLab.
+
+Au moment de mon arrivée chez Alter Frame la partie CI des projets consistait majoritairement en la compilation des projets et une analyse de code à l'aide d'un plugin SonarQube\footnote{\url{https://www.sonarqube.org/}}, mise en place depuis environ 2 ans.
+
+Le principe est que les actions décrites ci-dessus, compilation et analyse de code, sont effectuées à chaque push sur le serveur GitLab. Ce fonctionnement peut ensuite être affiné, pour ne se produire que lorsqu'un tag git est pushé ou sur certaines branches (branche master, tag de release, etc).
+
+Il n'y avait néanmoins pas de composante cybersécurité dans le processus de CI d'Alter Frame et c'est donc ce sur quoi je suis intervenu en priorité. Malgré tout, mon travail ne s'est pas limité à cela et j'ai aussi pu travailler sur d'autres aspects du CI et améliorer l'existant.
+
+\subsection{Les outils}
+\subsubsection{ZAP : Zed Attack Proxy}
+ZAP\footnote{\url{https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project}} est un projet open source développé par l'OWASP. Il s'agit un proxy qui peut intercepter et analyse le trafic qui traverse la machine hôte. ZAP est un outil de sécurité très intéressant et ce pour un grand nombre de raisons :
+\begin{itemize}[label=$\bulllet$]
+\item activement développé\footnote{Plus de 60 commits en juin 2017, voir \url{https://github.com/zaproxy/zaproxy}} ;
+\item open source et cross-platform ;
+\item OWASP est une référence dans le monde de la sécurité ;
+\item une large communauté, et donc une grande quantité de ressources sur laquelle s'appuyer ;
+\item ZAP est contrôlable en ligne de commande/\textit{via} des APIs en plusieurs langages.
+\end{itemize}
+
+Je n'avais, avant mon stage, que briévement eu l'occasion d'utiliser ZAP, au-travers du sous-projet de tests d'intrusion avec M. Pachy. Le logiciel est à la fois complet et
+
+\subsubsection{Docker}
+\subsubsection{YAML}
+
+\subsection{Mon action sur le sujet}

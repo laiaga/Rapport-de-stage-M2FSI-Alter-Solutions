@@ -2,6 +2,8 @@
  "dev-java"
  (lambda ()
    (LaTeX-add-labels
-    "subsec:ajout"))
+    "fig:acceuil"
+    "subsec:ajout"
+    "fig:classeur"))
  :latex)
 
