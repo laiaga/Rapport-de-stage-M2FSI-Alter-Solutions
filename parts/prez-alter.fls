@@ -1,7 +1,0 @@
-PWD /run/media/aleonardi/DATA/Documents/Rapport-de-stage-M2FSI-Alter-Solutions/parts
-INPUT /usr/share/texmf-dist/web2c/texmf.cnf
-INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
-INPUT prez-alter.tex
-OUTPUT prez-alter.log
-INPUT /usr/share/texmf-dist/fonts/map/fontname/texfonts.map
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
