@@ -28,6 +28,7 @@
 *.el
 *.fls
 *.fdb_texmk
+*.json
 
 old_reports/
 auto/
