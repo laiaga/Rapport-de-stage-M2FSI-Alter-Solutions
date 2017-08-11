@@ -1,9 +1,8 @@
+sudo: enabled
 dist: trusty
 language: ruby
 before_install:
-  - sudo apt-get -qq update && sudo apt-get install -y --no-install-recommends texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra dvipng texlive-latex-recommended lmodern
+  - sudo apt-get update -qq
+  - sudo apt-get -qq update && sudo apt-get install -y  texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra dvipng texlive-latex-recommended lmodern
 script:
-  - pdflatex -interaction=nonstopmode -halt-on-error leonardi_M2FSI_rapport_stage_2017.tex
-#deploy:
-#  file:
-#    - *.pdf
+  - pdflatex -interaction=nonstopmode -halt-on-error M2FSI-rapport-LÉONARDI-alexandre.tex
