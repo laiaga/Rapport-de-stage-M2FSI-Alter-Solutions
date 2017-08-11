@@ -23,6 +23,7 @@
 \linespread{1.15} %Set standard document linespacing
 
 \input{parts/intro.tex}
+
 \pagebreak
 \clearpage
 \vspace*{\fill}
@@ -34,20 +35,36 @@
 \vfill % equivalent to \vspace{\fill}
 \clearpage
 \pagebreak
+
 \input{parts/prez-alter.tex}
+\pagebreak
+\input{parts/sujet.tex}
+\pagebreak
+\input{parts/synthese_travail.tex}
+
+\pagebreak
+\clearpage
+\vspace*{\fill}
+\begin{center}
+\begin{minipage}{.6\textwidth}
+\Huge Rapport technique
+\end{minipage}
+\end{center}
+\vfill % equivalent to \vspace{\fill}
+\clearpage
+\pagebreak
+
+\input{parts/securite-ci.tex}
 \pagebreak
 \input{parts/dev-java.tex}
 \pagebreak
-\input{parts/securite-ci.tex}
+\input{parts/audit_code.tex}
 \pagebreak
-\input{parts/retex.tex}
-\pagebreak
-\input{parts/perspectives.tex}
-\pagebreak
+
 \input{parts/ccl.tex}
 \pagebreak
 
-\bibliography{parts/biblio}
-\bibliographystyle{plainmat}
+%\bibliography{parts/biblio}
+%\bibliographystyle{plainmat}
 
 \end{document}
