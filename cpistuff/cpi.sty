@@ -56,15 +56,14 @@
 \renewcommand{\headrulewidth}{0pt}
 \lhead{\rmfamily \Title}
 \rhead{\rmfamily \Date}
-\lfoot{\rmfamily \cpiType}
+\lfoot{\rmfamily \SubtitleCustom}
 \rfoot{\rmfamily Page \thepage}
-
 
 %CHANGE TITLE PAGE
 \renewcommand\@maketitle{\newpage
 \newgeometry{margin = 0in}
 %\vspace{-1in}
-\includegraphics[width=3.09in]{cpistuff/logo_sciences.png}
+\includegraphics[width=3.09in]{cpistuff/logos.eps}
 \setlength{\fboxsep}{0pt}
 \hfill \colorbox{cpiGray}{\makebox[3.22in][r]{\shortstack[r]{\vspace{2.75in}}}}%
 %\hfill \colorbox{cpiGray}{\hspace{.25in} \parbox{2.97in}{\vspace{2.75in}}}%
@@ -72,12 +71,12 @@
 \setlength{\fboxsep}{10pt}
 \setlength{\fboxrule}{0pt}
 \colorbox{amuBlue}{\makebox[8.25in][l]{\hfill \shortstack[r]{\fontsize{36}{36}\rmfamily\color{white} \@title\\%
-\fontsize{24}{24}\rmfamily\color{white} \cpiType}}}%
+\fontsize{24}{24}\rmfamily\color{white} \subtitle}}}%
 \setlength{\fboxsep}{0pt}
 \vspace{-8.5pt}
 %\hfill \colorbox{cpiGray}{\makebox[3.22in][r]{\shortstack[r]{\vspace{4in} \color{white} \textbf{\@author \\ \\ Climate Policy Initiative San Francisco \\ \\ \today \vspace{2.3in}}}}%
 %\hfill \colorbox{cpiGray}{\hfill \begin{minipage}{3.22in} \vspace{3in} \color{white} turtleface \end{minipage}}%
-\hfill \colorbox{cpiGray}{\hspace{.25in} \parbox{2.97in}{\vspace{4in} \color{white} \textbf{\@author \\ \\ Alter Frame \\ \\   \today \vspace{2.3in} \vfill}}}%
+\hfill \colorbox{cpiGray}{\hspace{.25in} \parbox{2.97in}{\vspace{4.9in} \color{white} \textbf{\@author \\ \\ M2FSIL-FSI \\ \\ Année 2016/2017 \\ \\ Encadrants : Clément Fleury \& \\ Idir Meziani \\ \\ Enseignant : Emmanuel Godard \vspace{0.7in} \vfill}}}%
 \let\Title\@title
 \restoregeometry}
 
@@ -90,7 +89,7 @@
 \renewcommand{\headrulewidth}{0pt}
 \lhead{\rmfamily \Title}
 \rhead{\rmfamily \Date}
-\lfoot{\rmfamily \cpiType}
+\lfoot{\rmfamily \subtitle}
 \rfoot{\rmfamily Page \thepage}
 {\Large \color{amuBlue} Executive Summary}\\ \vspace{12pt}}
 {\pagebreak}

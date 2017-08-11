@@ -4,7 +4,7 @@
 %\usepackage{garamond}
 
 \newcommand*\Title{Rapport de stage de fin d'études}
-\newcommand*\cpiType{CPI Template}
+\newcommand*\subtitle{Sécurité, CI et développement Java}
 \newcommand*\Date{\today}
 \newcommand*\Author{Alexandre Léonardi}
 \title{Rapport de stage de fin d'études}
@@ -22,9 +22,12 @@
 
 \linespread{1.15} %Set standard document linespacing
 
-\input{parts/intro.tex}
-
+\tableofcontents
+\addtocontents{toc}{~\hfill\textbf{Page}\par}
 \pagebreak
+\input{parts/intro.tex}
+\pagebreak
+
 \clearpage
 \vspace*{\fill}
 \begin{center}
