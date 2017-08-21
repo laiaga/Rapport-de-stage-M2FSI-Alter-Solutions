@@ -5,4 +5,26 @@ J'ai eu l'occasion, sur la fin de mon stage, de réaliser un audit pour une soci
 L'audit comportait trois axes importants : la qualité, la sécurité et la performance. 
 
 \subsection{Méthodologie}
+Mon intervention a naturellement concerné ces trois aspects, et ce de trois façons différentes. 
+
+\subsubsection{Sécurité}
+Il s'agit naturellement de la partie où mon intervention a été la plus notable (NOTE : est-ce que ça fait pas pompeux ?!!!). Les analyses de séurité se sont faites sur site, à partir d'une machine configurée par le client : l'intervention concerne une application web disponible uniquement en intranet chez le client et leurs procédures et protocoles de sécurité rendent très compliqué d'exporter l'appplication pour l'auditer à partir des locaux d'Alter Frame. 
+
+Le test a consisté à mener des analyses avec OWASP ZAP et à analyser et rejouer les résultats, trier les faux positifs des vraies failles de sécurité et faire un état de l'évolution de l'application depuis le précédent audit qui date d'un an. 
+
+Nous avons utilisé les fonctionnalités classiques de ZAP pour obtenir un résultat le plus exhaustif possible compte tenu du peu de temps alloué à l'audit de sécurité : d'abord \textit{spider} l'application cible pour que le proxy en découvre la majorité, avant de lancer un scan actif qui, compte tenu de la taille de l'application auditée, a pris plusieurs heures de temps d'exécution. 
+
+Le test a également incorporé une partie audit de code, supportée par l'utilisation de SonarQube et qui se recoupera avec la partie qualité. Sonar peut, en effet, être configuré pour retourner des alertes de sécurité en ce qui concerne le code analysé. Comme pour ZAP il requière une intervention humaine pour écarter les faux positifs et n'offre aucune garantie d'exhaustivité, mais cela représentait un point d'entrée efficace pour chercher des traces de risques dans le code audité. 
+
+\subsubsection{Performance}
+La partie audit de performance a elle aussi compris deux sous parties, l'une dynamique basée sur l'utilisation de JMeter\footnote{\url{http://jmeter.apache.org/}} et de nmon\footnote{\url{http://nmon.sourceforge.net/pmwiki.php}}, l'autre statique (à savoir, une analyse de code). Je ne suis personellement intervenu que sur la partie dynamique qui s'est effectuée sur site pour les mêmes raisons que l'analyse de sécurité. 
+
+JMeter est un outil développé par Apache qui permet de faire des tests de charge d'applications Web. Les fonctionnalités de l'outil sont impressionantes de diversité et de profondeur et comme encore une fois le temps alloué à l'auit était court, je n'ai pu qu'en effleurer la surface : mon travail a consisté à enregistrer une série de cas d'utilisation typiques en plaçant JMeter en proxy de navigation, puis à les configurer pour qu'ils soient reproductibles automatiquement (par exemple en générant des utilisateurs de manière procédurale) et à les rejouer en boucle. 
+
+JMeter produit des résultats très complets formatés en HTML qui affichent plusieurs métriques sous formes de graphiques ou de tableaux récapitulatifs, et nous avons effectué plusieurs jeux de test en augmentant à chaque fois la charge à laquelle le serveur était soumis pour observser son comportement jusq'au point où il "tombe".
+
+Nmon pour sa part est un outil de monitoring 
+
+\subsubsection{}
+
 \subsection{Résultats obtenus}
