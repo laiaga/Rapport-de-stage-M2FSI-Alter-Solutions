@@ -1,0 +1,50 @@
+// This document is in JSON format.  Note that there must be a comma
+// between every pair of attributes, but not following the last one.
+//
+// Note that the only comments recongnized by the parser are those
+// with a double slash preceded only by whitespace.
+{
+  // The "file" settings are used when compiling with the "eval.one"
+  // command, bound by default to "Ctrl-Enter".
+  "file": {
+    // The filename to use in the compilation.  The default, null, means
+    // to use the name of the file being edited (if a TeX file) or the
+    // last TeX file to be compiled.
+    //"filename": null,
+
+    // The commands to run.  Either
+    //  - a list of strings, each one a command to be run.  The
+    //    substitution patterns below will be replaced with values
+    //    derived from filename.
+    //  - one of "pdflatex" (the default), "latex-dvipdf", or
+    //    "latex-dvips-ps2pdf", to call those commands with
+    //    appropriate arguments.
+    //"commands": "pdflatex",
+
+    // The name of the PDF file created by this command.  The
+    // substitution patterns may be used.
+    //"outputname": "%b.pdf"
+  },
+  // The "project" settings are used when compiling with the "eval"
+  // command, bound by default to "Ctrl-Shift-Enter".
+  "project": {
+    // The same settings as for "file".
+  }
+  // The "PDF-viewer" setting gives the command to be run to display
+  // the PDF file.  Either "internal" to use the internal viewer, or a
+  // command to launch an external program.  Substitution patterns may
+  // be used.  Set to the empty string to turn of the viewer.
+  //"PDF-viewer": "internal"
+}
+
+// Pattern | Substitution value
+// --------|-------------------
+//    %f   | name of file
+//    %p   | full path of file
+//    %d   | directory of file
+//    %b   | base name, without file extension
+//    %e   | file extension
+//    %%   | a percent sign
+//    %o   | name of PDF file      ]
+//    %l   | current line number   ] Only PDF-viewer
+//    %c   | current column number ]
