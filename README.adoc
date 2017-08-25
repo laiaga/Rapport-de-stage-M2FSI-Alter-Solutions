@@ -19,3 +19,4 @@ https://www.overleaf.com/latex/templates/climate-policy-initiative-report-templa
 * Retaper pour que ce soit moins verbeux
 * Vérifier capitalisation des mots (e.g. git en minuscules sauf début de phrase)
 * Faire concorder les couleurs
+* "push" et autres anglicismes => tout mettre en italique ou tout enlever

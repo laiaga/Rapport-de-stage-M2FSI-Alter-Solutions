@@ -1,0 +1,99 @@
+\section{Environnement de travail \& solutions retenues}
+Je ne suis intervenu que sur des projets qui étaient déjà commencés, et de ce fait il n'y a eu que peu de choix en termes de solutions retenues. Je vais néanmoins détailler ici l'environnement de travail, les différentes solutions techniques qui étaient déjà en place à mon arrivée et avec lesquelles j'ai travaillé pendant 6 mois. 
+
+\subsection{CI}
+\subsubsection{GitLab \& GitLab-CI}
+L'intégration continue dans les projets d'Alter Frame se fait à l'aide d'un service proposé par la plateforme d'hébergement de projets informatiques GitLab\footnote{\url{https://about.gitlab.com/}}. Le service en question, GitLab-CI\footnote{\url{https://about.gitlab.com/features/gitlab-ci-cd/}}, propose de mettre en place de l'intégration continue sur les projets hébergés sur GitLab.
+
+Au moment de mon arrivée chez Alter Frame la partie CI des projets consistait majoritairement en la compilation des projets et une analyse de code à l'aide d'un plugin SonarQube\footnote{\url{https://www.sonarqube.org/}}, mise en place depuis environ 2 ans.
+
+Le principe est que les actions décrites ci-dessus, compilation et analyse de code, sont effectuées à chaque push sur le serveur GitLab. Ce fonctionnement peut ensuite être affiné, pour ne se produire que lorsqu'un tag git est pushé ou sur certaines branches (branche master, tag de release, etc).
+
+Il n'y avait néanmoins pas de composante cybersécurité dans le processus de CI d'Alter Frame et c'est donc ce sur quoi je suis intervenu en priorité. Néanmoins, mon travail ne s'est pas limité à cela et j'ai aussi pu intervenir sur d'autres aspects du CI et améliorer l'existant.
+
+\subsubsection{ZAP : Zed Attack Proxy}
+\begin{figure}
+  {\includegraphics[width=\textwidth]{images/zap_acceuil}}
+  \centering
+  \caption{Fenêtre de démarrage de ZAP}
+  \label{fig:zap_acceuil}
+\end{figure}
+ZAP\footnote{\url{https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project}} (voir figure~\ref{fig:zap_acceuil}) est un projet open source développé par l'OWASP\footnote{\url{https://www.owasp.org/index.php/Main_Page}}. Il s'agit un proxy qui peut intercepter et analyse le trafic qui traverse la machine hôte. ZAP est un outil de sécurité très intéressant et ce pour un grand nombre de raisons :
+\begin{itemize}[label=$\bullet$]
+\item activement développé\footnote{Plus de 60 commits en juin 2017, voir \url{https://github.com/zaproxy/zaproxy}} ;
+\item open source et cross-platform ;
+\item OWASP est une référence dans le monde de la sécurité ;
+\item une large communauté, et donc une grande quantité de ressources sur laquelle s'appuyer ;
+\item ZAP est contrôlable en ligne de commande/\textit{via} des APIs en plusieurs langages.
+\end{itemize}
+
+\begin{lstlisting}[caption={Options de ZAP en ligne de commande},frame=single]
+$ zap.sh -cmd -help
+Usage:
+    zap.sh [Options]
+Core options:
+    -version                 Reports the ZAP version
+    -cmd                     Run inline (exits when command line options complete)
+    -daemon                  Starts ZAP in daemon mode, ie without a UI
+    -config <kvpair>         Overrides the specified key=value pair in the configuration file
+    -configfile <path>       Overrides the key=value pairs with those in the specified properties file
+    -dir <dir>               Uses the specified directory instead of the default one
+    -installdir <dir>        Overrides the code that detects where ZAP has been installed with the specified directory
+    -h                       Shows all of the command line options available, including those added by add-ons
+    -help                    The same as -h
+    -newsession <path>       Creates a new session at the given location
+    -session <path>          Opens the given session after starting ZAP
+    -host <host>             Overrides the host used for proxying specified in the configuration file
+    -port <port>             Overrides the port used for proxying specified in the configuration file
+    -lowmem                  Use the database instead of memory as much as possible - this is still experimental
+    -experimentaldb          Use the experimental generic database code, which is not surprisingly also still experimental
+    -nostdout                Disables the default logging through standard output
+Add-on options:
+    -script <script>         Run the specified script from commandline or load in GUI
+    -addoninstall <addon>    Install the specified add-on from the ZAP Marketplace
+    -addoninstallall         Install all available add-ons from the ZAP Marketplace
+    -addonuninstall <addon>  Uninstall the specified add-on
+    -addonupdate             Update all changed add-ons from the ZAP Marketplace
+    -addonlist               List all of the installed add-ons
+    -quickurl [target url]: The URL to attack, eg http://www.example.com
+    -quickout [output filename]: The file to write the XML results to
+    -quickprogress: Display progress bars while scanning
+    -last_scan_report <path> Generate the 'Last Scan Report' into the specified path
+\end{lstlisting}
+
+Je n'avais, avant mon stage, que brièvement eu l'occasion d'utiliser ZAP, au-travers du sous-projet de tests d'intrusion avec M. Pachy. Pouvoir m'entraîner plus longuement avec représentait donc à la fois un intérêt personnel, car cela me permettait d'en apprendre plus sur les vulnérabilités web les plus répandues, et professionnel car c'est un outil dont l'usage pourrait être pertinent pour mes futurs emplois.
+
+ZAP est le seul outil sur lequel il y a vraiment eu un choix à faire car les tests de sécurité n'étaient pas encore implémentés à mon arrivée. Le principal concurrent de ZAP est Burp Suite\footnote{\url{https://portswigger.net/burp}}, une solution non-libre mais qui dispose d'une version gratuite. 
+
+Les arguments qui ont fait pencher la balance en la faveur de ZAP sont :
+\begin{itemize}[label=$\bullet$]
+  \item le fait que l'OWASP est une référence dans le monde de la sécurité ;
+  \item le développement ouvert qui est une assurance de qualité dans le monde de la sécurité (possibilité de relever les failles/oublis/erreurs dans le code) ;
+  \item le fait que moi comme mon tuteur ayons déjà eu une expérience avec ZAP et pas avec Burp.
+\end{itemize}
+
+\subsubsection{Docker}
+Docker\footnote{\url{https://www.docker.com/}} est une technologie de virtualisation basée sur des conteneurs, qui vient se place en opposition aux hyperviseurs et machines virtuelles\footnote{Ou VMs pour Virtual Machines}. En plus d'une charte graphique à base de faune marine des plus plaisantes\footnote{\url{https://www.docker.com/sites/default/files/group_5622_0.png}}, la technologie Docker présente plusieurs fonctionnalités qui la rendent intéressante dans le monde de l'industrie informatique :
+\begin{itemize}[label=$\bullet$]
+\item un conteneur est plus léger qu'une VM ;
+\item un conteneur s'exécute de la même façon sur n'importe quelle machine où Docker est installé ;
+\item un conteneur peut embarquer toute la configuration nécessaire au bon fonctionnement de l'application, et c'est là le point le plus important. L'étape de configuration de l'environnement n'a à être effectuée qu'une seule fois, à la création de l'image\footnote{On ne parle de conteneur qu'une fois l'image en cours d'exécution, cf. différence entre processus et programme}. De plus le système de Docker Store\footnote{\url{https://store.docker.com/}}, proche de celui d'un gestionnaire de paquets, permet au client d'avoir facilement la dernière version possible d'un logiciel, encore une fois en s'abstrayant des changements de configuration qui vont avec la mise-à-jour.
+\end{itemize}
+
+On assiste donc à une généralisation de l'utilisation de Docker depuis sa première version en 2013, avec de nombreux cas d'utilisation\footnote{\url{https://www.airpair.com/docker/posts/8-proven-real-world-ways-to-use-docker}}, mais aussi à une multiplication des outils en lien avec la technologie Docker comme des outils de gestion de groupes de containers\footnote{e.g. \href{https://kubernetes.io/}{Kubernetes}, \href{https://docs.docker.com/engine/swarm/}{Docker Swarm}}.
+
+GitLab-CI est étroitement lié à Docker : lors d'un push, un container est lancé dans lequel tout le processus de CI est exécuté, en isolation. De ce fait, il n'y avait pas de choix à faire quant à la technologie de virtualisation. Le comportement du processus peut être configuré au-travers d'un script en YAML, il est par exemple possible de sélectionner l'image Docker servant d'environnement d'exécution.
+
+\subsubsection{YAML}
+YAML Ain't Markup Language\footnote{\url{http://yaml.org/}}, de son nom complet, est un ``standard de sérialisation de données''.
+
+\subsection{Développement Java}
+Java 8 \& Java Swing
+Eclipse
+Maven
+\subsubsection{Audit technique}
+ZAP again
+JMeter \& SoapUI
+SonarQube
+
+
