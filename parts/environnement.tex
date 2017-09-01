@@ -11,7 +11,7 @@ Le principe est que les actions décrites ci-dessus, compilation et analyse de c
 
 Il n'y avait néanmoins pas de composante cybersécurité dans le processus de CI d'Alter Frame et c'est donc ce sur quoi je suis intervenu en priorité. Néanmoins, mon travail ne s'est pas limité à cela et j'ai aussi pu intervenir sur d'autres aspects du CI et améliorer l'existant.
 
-\subsubsection{ZAP : Zed Attack Proxy}
+\subsubsection{ZAP : Zed Attack Proxy}[h]
 \begin{figure}
   {\includegraphics[width=\textwidth]{images/zap_acceuil}}
   \centering
@@ -24,10 +24,11 @@ ZAP\footnote{\url{https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 \item open source et cross-platform ;
 \item OWASP est une référence dans le monde de la sécurité ;
 \item une large communauté, et donc une grande quantité de ressources sur laquelle s'appuyer ;
-\item ZAP est contrôlable en ligne de commande/\textit{via} des APIs en plusieurs langages.
+\item ZAP est contrôlable en ligne de commande (voir extrait~\ref{lst:zap_options}) et \textit{via} des APIs en plusieurs langages.
 \end{itemize}
 
-\begin{lstlisting}[caption={Options de ZAP en ligne de commande},frame=single]
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Options de ZAP en ligne de commande},label={lst:zap_options},numbers=none]
 $ zap.sh -cmd -help
 Usage:
     zap.sh [Options]
@@ -60,6 +61,7 @@ Add-on options:
     -quickprogress: Display progress bars while scanning
     -last_scan_report <path> Generate the 'Last Scan Report' into the specified path
 \end{lstlisting}
+\end{minipage}
 
 Je n'avais, avant mon stage, que brièvement eu l'occasion d'utiliser ZAP, au-travers du sous-projet de tests d'intrusion avec M. Pachy. Pouvoir m'entraîner plus longuement avec représentait donc à la fois un intérêt personnel, car cela me permettait d'en apprendre plus sur les vulnérabilités web les plus répandues, et professionnel car c'est un outil dont l'usage pourrait être pertinent pour mes futurs emplois.
 
