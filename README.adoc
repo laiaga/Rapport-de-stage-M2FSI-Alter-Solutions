@@ -22,3 +22,5 @@ https://www.overleaf.com/latex/templates/climate-policy-initiative-report-templa
 * "push" et autres anglicismes => tout mettre en italique ou tout enlever
 * regarder si j'ai pas mis Java 8 par erreur en parlant du projet Java
 * Est-ce que je garde vraiment le ragecomic pour Java 7/8
+* Diriger la sortie vers un dossier 'output'
+* Utiliser editorconfig
