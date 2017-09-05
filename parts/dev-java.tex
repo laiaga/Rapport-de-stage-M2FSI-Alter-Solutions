@@ -5,9 +5,9 @@ La pemière partie de mon stage a été occupé par beaucoup de développement e
 Produire et mettre en vente une voiture requière que celle-ci soit passée par une batterie de tests intensifs. Ce premier projet était un logiciel permettant de gérer ces tests de bout en bout : ajouter un véhicule à la base de données, établir une liste d'organes à tester, une liste de tests pour chaque organe, puis ensuite enregistrer les résultats des tests qui ont été effectués (voir graphique~\ref{fig:acceuil}). Cela représente le c\oe{}ur de la logique métier impliquée dans le logiciel, mais naturellement il y avait autour de ce noyau de nombreuses fonctionnalités plus ``classiques'' telles que la gestion d'authentification des utilisateurs, les différents privilèges (administrateur, utilisateur simple), etc.
 
 \begin{figure}{l}
-  \makebox[\textwidth][c]{\includegraphics[width=\paperwidth]{images/attm_acceuil}}
-  \caption{Fenêtre de démarrage de l'outil}
-  \label{fig:acceuil}
+	\makebox[\textwidth][c]{\includegraphics[width=\paperwidth]{images/attm_acceuil}}
+	\caption{Fenêtre de démarrage de l'outil}
+	\label{fig:acceuil}
 \end{figure}
 
 De manière intéressante, j'ai remarqué en travaillant sur le workflow des tests automobile implémenté dans cet outil que celui-ci est semblable au cycle en V qui fait partie intégrante de la gestion de projet en informatique. Les détails étaient, naturellement, très différents mais ce qui semblait être les grandes lignes de la façon dont un projet de tests devait être géré était au contraire très proche de ce que nous connaissons dans le monde de l'informatique.
@@ -16,10 +16,10 @@ Une particularité de ce projet est qu'il s'agit d'un logiciel déjà existant q
 
 \subsection{Environnement technique}
 \begin{itemize}[label=$\bullet$]
-\item \emph{Java 7 :} Le projet étant vieux de plusieurs années déjà, il utilise la version de Java qui était en vigueur à l'époque de sa genèse à savoir Java 7.
-\item \emph{Java Swing :} Pour les mêmes raisons que Java 7, le framework utilisé pour la partie graphique de l'application est Java Swing\footnote{\url{https://en.wikipedia.org/wiki/Swing_(Java)}}.
-\item \emph{Apache ActiveMQ\footnote{\url{http://activemq.apache.org/}} :} L'outil fonctionne selon une architecture client-serveur classique et la communication entre le serveur et les différents clients se fait au-travers d'un système de queues et du système open source ActiveMQ.
-\item \emph{MyBatis :\footnote{\url{http://www.mybatis.org/mybatis-3/}}} La liaison base de données/application se fait grâce à cet ORM open source qui a la particularité de mapper des méthodes Java à des requêtes SQL\footnote{Comparaison de MyBatis à JDBC et Hiberte : \url{https://blog.zenika.com/2012/03/28/presentation-de-mybatis/}}.
+	\item \emph{Java 7 :} Le projet étant vieux de plusieurs années déjà, il utilise la version de Java qui était en vigueur à l'époque de sa genèse à savoir Java 7.
+	\item \emph{Java Swing :} Pour les mêmes raisons que Java 7, le framework utilisé pour la partie graphique de l'application est Java Swing\footnote{\url{https://en.wikipedia.org/wiki/Swing_(Java)}}.
+	\item \emph{Apache ActiveMQ\footnote{\url{http://activemq.apache.org/}} :} L'outil fonctionne selon une architecture client-serveur classique et la communication entre le serveur et les différents clients se fait au-travers d'un système de queues et du système open source ActiveMQ.
+	\item \emph{MyBatis :\footnote{\url{http://www.mybatis.org/mybatis-3/}}} La liaison base de données/application se fait grâce à cet ORM open source qui a la particularité de mapper des méthodes Java à des requêtes SQL\footnote{Comparaison de MyBatis à JDBC et Hiberte : \url{https://blog.zenika.com/2012/03/28/presentation-de-mybatis/}}.
 \end{itemize}
 
 \subsection{Fonctionnalités ajoutées}
@@ -29,9 +29,9 @@ Comme mentionné plus haut, le gros du travail sur cet outil consistait à repre
 Les fonctionnalités ajoutées sont donc, comparativement, peu nombreuses. Ma première réalisation originale sur ce projet a été de modifier la génération de tableau Excel (voir figure~\ref{fig:classeur}) pour prendre en compte de nouvelles spécifications.
 
 \begin{figure}{l}
-  \makebox[\textwidth][c]{\includegraphics[width=\paperwidth]{images/attm_classeur}}
-  \caption{Classeur Excel généré par l'outil}
-  \label{fig:classeur}
+	\makebox[\textwidth][c]{\includegraphics[width=\paperwidth]{images/attm_classeur}}
+	\caption{Classeur Excel généré par l'outil}
+	\label{fig:classeur}
 \end{figure}
 
 La génération en elle-même existait déjà à ce moment à l'aide de Microsoft Visual Basic, Scripting Edition\footnote{VBScript pour les intimes, cf. \url{https://support.microsoft.com/en-us/help/198703/how-to-automate-excel-from-a-client-side-vbscript}}. Ce qui était demandé par le client était d'ajouter une nouvelle catégorie d'informations à ce classeur, à savoir les \emph{Situations de vie}.
