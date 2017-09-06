@@ -152,3 +152,10 @@ SonarQube\footnote{\url{https://www.sonarqube.org/}} est un outil d'analyse de c
 C'est durant l'audit que j'ai majoritairement utilisé Sonar, mais les scripts de CI qui étaient en plus avant mon arrivée chez Alter Frame incorporaient déjà des analyses Sonar effectuées sur le code. C'est d'ailleurs de ce fait (mon tuteur ayant déjà de l'expérience avec ce logiciel) ainsi que du faible nombre de concurrents gratuits\footnote{Un exemple possible mais peu connu est \href{http://www.squale.org/}{Squale}.} que nous avons choisi d'utiliser Sonar dans ce cas de figure.
 
 \subsubsection{JMeter \& SoapUI}
+Ces deux outils, de même que ZAP, avaient déjà été utilisés lors des itérations précédentes de l'audit, et les conserver permettait de comparer facilement les résultats que nous obtiendrions avec les résultats antérieurs. Aussi, en l'absence de raison de ne \emph{pas} les conserver, nous les avons conservés. 
+
+SoapUI\footnote{\url{https://www.soapui.org/}} est un outil de test pour applications REST ou SOAP. L'application auditée utilisait le protocole SOAP, et SoapUI nous a servi à modifier et rejouer des requêtes isolées, sans tester les performances de l'application mais pour en saisir le fonctionnement et préparer le véritable test, en plus de vérifier que nous avions bien les droits pour réaliser toutes les opérations prévues. 
+
+JMeter\footnote{\url{http://jmeter.apache.org/}} est un outil de test de performances pour applications web en général. Le panel de fonctionnalités qu'il offre est extrêmement large (et en conséquence, sa prise en main est loin d'être triviale) et nous n'en avons utilisé qu'une partie : configurer JMeter comme proxy pour enregistrer un cas d'utilisation typique qui servira de scénario de test, puis rejouer celui-ci en boucle et plusieurs fois en parallèle pour tester les limites de l'application. 
+
+%TODO : ajouter un screen de JMeter
