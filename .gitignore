@@ -32,6 +32,7 @@
 *.html
 *.rip
 
+.latex/
 old_reports/
 auto/
 cpistuff/pgf-pie-0.2.1
