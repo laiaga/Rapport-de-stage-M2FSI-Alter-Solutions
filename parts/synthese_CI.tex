@@ -11,10 +11,10 @@ On appelle "runner" l'hôte sur lequel s'exécute l'image docker, et "job" chacu
 La figure~\ref{fig:ci_flow} résume le fonctionnement de GitLab-CI. 
 
 \begin{figure}
-	\centering
-	\caption{Résumé du processus de CI (\emph{build}, \emph{test} et \emph{deploy} sont les stages par défaut)}
-	\label{fig:ci_process}
-	\frame{\includegraphics[width=\textwidth]{images/process_ci.pdf}}
+  \centering
+  \caption{Résumé du processus de CI (\emph{build}, \emph{test} et \emph{deploy} sont les stages par défaut)}
+  \label{fig:ci_process}
+  \frame{\includegraphics[width=\textwidth]{images/process_ci.pdf}}
 \end{figure}
 
 \subsection{Déployer automatiquement les applications web}
@@ -36,9 +36,29 @@ Bien entendu cette méthode aussi avait un coût. Tout d'abord, GitLab-CI met en
 
 Ensuite, déployer et configurer une application est un procédé lourd qui peut impliquer l'installation de dépendances. En réalisant cela dans un container, deux cas de figure se présentent :
 \begin{itemize}[label=$\bullet$]
+\item soit on utilise une image générique proposant l'outil de base (e.g. openjdk:latest pour un projet Java) et on installe dans le .yml les différentes dépendance. Ce n'est pas compliqué de mise en oeuvre, mais chaque exécution du script sera longue, et la lenteur est vite limitante dans le domaine de l'intégration continue (le développeur n'a pas toujours le temps d'attendre qu'un procédé long se termine) ;
+\item soit on crée une image personnalisée qui embarque déjà les dépendances requises, cela accélère le processus de CI mais rajoute du travail en amont avec la création et la configuration de l'image, ainsi que son stockage sur un registre Docker. De plus, le processus perd en transparence car la configuration de l'environnement devient cachée au développeur qui ne voit que le nom de l'image utilisée. Bien sûr, cela peut aussi être vu comme un avantage car le .yml s'en trouve d'autant allégé, et ne contient au final plus que l'essentiel du point de vue intégration et déploiement. 
 \end{itemize}
+% TODO : mettre le listing du dockerfile que j'ai créé
+
+C'est la deuxième approche que j'ai conservée, mais non sans avoir testé la première au préalable. Avoir la configuration directement dans le .yml était source de complexité (appeler un .sh à l'intérieur du .yml pour extenaliser de gros blocs de code) et de bugs (de petits changements pouvaient entraîner des résultats inattendus, surtout compte tenu du fait que nous étions plusieurs à intervenir sur le .yml).
+
+% TODO : parler un peu de ce que j'ai dû faire dans le dockerfile comme config
+
+Au final, cette méthode a tenu ses promesses : nous nous retrouvions avec une configuration sauvegardée à part, facile et rapide à importer, et qui comportait toutes les dépendances requises pour le projet. De plus un runner avait été spécialement configuré pour permettre l'utilisation de dind, restreinte par défaut, et générer l'image qui encapsulait l'appli web développée par Alter Frame devenait possible.
 
 \subsection{Intégrer ZAP et les analyses de sécurité}
+ZAP a pour lui d'intégrer par défaut les cas d'usage qui m'importaient, à savoir de pouvoir être utilisé en mode ligne de commade et/ou contrôlé par une API sans interaction avec l'utilisateur au moment de l'exécution.
+
+De ces deux solutions, c'est celle de l'API qui est la plus complète : ZAP en ligne de commande propose quelques options
+% TODO : mettre un lien vers le listing de ZAP de la partie d'avant
+mais qui sont vite limitées : se connecter à un site web, lancer certaines des commandes de base de l'application comme le crawler ou le scan actif, et générer un fichier de résultats. Le scan actif de ZAP est tout de même assez intéressant pour que cette méthode soit pertinente, mais les options proposées par les APIs sont bien plus foisonnantes.
+
+Néanmoins, la solution de l'API rajoute une contrainte : en plus de ZAP, il faut que l'environnement de CI dispose du langage de l'API. Les deux APIs principales maintenues par la communauté de développeurs ``officiels'' de ZAP sont celles en Java et en Python. J'ai retenu l'utilisation de Python d'une part car ce langage est concis et se prête très bien à l'écriture de courts scripts, d'autre part pour avoir l'occasion de m'en servir et développer des compétences qui me seraient utiles plus tard dans mon parcours professionnel.
+% TODO : lien vers la partie "avenir" pour dire que je vais me servir de python
+
+Plutôt que de rajouter encore un élément à l'image Docker créée spécialement au point précédent, j'ai préféré utiliser une fonctionnalité très intéressante de GitLab-CI, celle de pouvoir spécifier une image différente pour chaque job. Elle rajoute en verbosité au script car l'image doit donc être spécifiée pour chaque job sans exception (impossible d'en utiliser une par défaut et de ne la remplacer que pour le job de l'analyse ZAP), mais elle évite de surcharger l'image Docker utilisée pour le déploiement. Qui plus est, cette image de déploiement est spécifique à chaque projet et doit donc être réécrire, alors que le script commendant l'exécution de ZAP peut être générique (exception faite de l'URL cible). Inclure l'image à utiliser à ce script renforce cette autonomie, le bloc de code peut littéralement être copié collé d'un projet à l'autre et fonctionner (encore une fois sous réserve de changer l'URL à attaquer).
+%TODO : inclure le snippet de ZAP
 
 \subsection{Méthodologie}
 \subsection{Travail effectué}
