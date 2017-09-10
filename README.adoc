@@ -24,6 +24,7 @@ https://www.overleaf.com/latex/templates/climate-policy-initiative-report-templa
 * Est-ce que je garde vraiment le ragecomic pour Java 7/8
 * Diriger la sortie vers un dossier 'output'
 * Utiliser editorconfig
+* Mettre quelques screenshots de l'interface de GitLab-CI quand je le présente
 
 .Crédits :
 * Icon made by https://www.flaticon.com/authors/situ-herrera[Situ Herrera] from https://www.flaticon.com[www.flaticon.com].
