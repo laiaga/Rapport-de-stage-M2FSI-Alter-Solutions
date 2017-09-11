@@ -39,9 +39,26 @@ Ensuite, déployer et configurer une application est un procédé lourd qui peut
 \item soit on utilise une image générique proposant l'outil de base (e.g. openjdk:latest pour un projet Java) et on installe dans le .yml les différentes dépendance. Ce n'est pas compliqué de mise en oeuvre, mais chaque exécution du script sera longue, et la lenteur est vite limitante dans le domaine de l'intégration continue (le développeur n'a pas toujours le temps d'attendre qu'un procédé long se termine) ;
 \item soit on crée une image personnalisée qui embarque déjà les dépendances requises, cela accélère le processus de CI mais rajoute du travail en amont avec la création et la configuration de l'image, ainsi que son stockage sur un registre Docker. De plus, le processus perd en transparence car la configuration de l'environnement devient cachée au développeur qui ne voit que le nom de l'image utilisée. Bien sûr, cela peut aussi être vu comme un avantage car le .yml s'en trouve d'autant allégé, et ne contient au final plus que l'essentiel du point de vue intégration et déploiement. 
 \end{itemize}
-% TODO : mettre le listing du dockerfile que j'ai créé
+\begin{minipage}{\linewidth}
+	\begin{lstlisting}[caption={Dockerfile utilisé pour le job de déploiement de l'application},label={lst:dockerfile}]
+		FROM nouchka/symfony:7.0
+		LABEL maintainer="aleonardi@alter-frame.com"
+		
+		ARG mysql_apt_version
+		
+		ENV DEBIAN_FRONTEND=noninteractive
+		ENV DEBCONF_NONINTERACTIVE_SEEN=true
+		
+		RUN apt-get update -yqq
+		RUN apt-get install --assume-yes wget lsb-release gnupg
+		RUN wget https://dev.mysql.com/get/mysql-apt-config_${mysql_apt_version}_all.deb
+		RUN dpkg -i mysql-apt-config_${mysql_apt_version}_all.deb
+		RUN apt-get update -yqq
+		RUN apt-get install --assume-yes mysql-client		
+\end{lstlisting}
+\end{minipage}
 
-C'est la deuxième approche que j'ai conservée, mais non sans avoir testé la première au préalable. Avoir la configuration directement dans le .yml était source de complexité (appeler un .sh à l'intérieur du .yml pour extenaliser de gros blocs de code) et de bugs (de petits changements pouvaient entraîner des résultats inattendus, surtout compte tenu du fait que nous étions plusieurs à intervenir sur le .yml).
+C'est la deuxième approche que j'ai conservée (voir le code de l'image en question dans le listing~\ref{lst:dockerfile}), mais non sans avoir testé la première au préalable. Avoir la configuration directement dans le .yml était source de complexité (appeler un .sh à l'intérieur du .yml pour extenaliser de gros blocs de code) et de bugs (de petits changements pouvaient entraîner des résultats inattendus, surtout compte tenu du fait que nous étions plusieurs à intervenir sur le .yml).
 
 % TODO : parler un peu de ce que j'ai dû faire dans le dockerfile comme config
 
@@ -50,29 +67,41 @@ Au final, cette méthode a tenu ses promesses : nous nous retrouvions avec une c
 \subsection{Intégrer ZAP et les analyses de sécurité}
 ZAP a pour lui d'intégrer par défaut les cas d'usage qui m'importaient, à savoir de pouvoir être utilisé en mode ligne de commade et/ou contrôlé par une API sans interaction avec l'utilisateur au moment de l'exécution.
 
-De ces deux solutions, c'est celle de l'API qui est la plus complète : ZAP en ligne de commande propose quelques options
-% TODO : mettre un lien vers le listing de ZAP de la partie d'avant
-mais qui sont vite limitées : se connecter à un site web, lancer certaines des commandes de base de l'application comme le crawler ou le scan actif, et générer un fichier de résultats. Le scan actif de ZAP est tout de même assez intéressant pour que cette méthode soit pertinente, mais les options proposées par les APIs sont bien plus foisonnantes.
+De ces deux solutions, c'est celle de l'API qui est la plus complète : ZAP en ligne de commande propose quelques options (cf. listing~\ref{lst:zap_options}) mais qui sont vite limitées : se connecter à un site web, lancer certaines des commandes de base de l'application comme le crawler ou le scan actif, et générer un fichier de résultats. Le scan actif de ZAP est tout de même assez intéressant pour que cette méthode soit pertinente, mais les options proposées par les APIs sont bien plus foisonnantes.
 
-Néanmoins, la solution de l'API rajoute une contrainte : en plus de ZAP, il faut que l'environnement de CI dispose du langage de l'API. Les deux APIs principales maintenues par la communauté de développeurs ``officiels'' de ZAP sont celles en Java et en Python. J'ai retenu l'utilisation de Python d'une part car ce langage est concis et se prête très bien à l'écriture de courts scripts, d'autre part pour avoir l'occasion de m'en servir et développer des compétences qui me seraient utiles plus tard dans mon parcours professionnel.
-% TODO : lien vers la partie "avenir" pour dire que je vais me servir de python
+Néanmoins, la solution de l'API rajoute une contrainte : en plus de ZAP, il faut que l'environnement de CI dispose du langage de l'API. Les deux APIs principales maintenues par la communauté de développeurs ``officiels'' de ZAP sont celles en Java et en Python. J'ai retenu l'utilisation de Python d'une part car ce langage est concis et se prête très bien à l'écriture de courts scripts, d'autre part pour avoir l'occasion de m'en servir et développer des compétences qui me seraient utiles plus tard dans mon parcours professionnel (ce qui sera le cas dès octobre, cf section~\ref{sec:avenir}).
 
 Plutôt que de rajouter encore un élément à l'image Docker créée spécialement au point précédent, j'ai préféré utiliser une fonctionnalité très intéressante de GitLab-CI, celle de pouvoir spécifier une image différente pour chaque job. Elle rajoute en verbosité au script car l'image doit donc être spécifiée pour chaque job sans exception (impossible d'en utiliser une par défaut et de ne la remplacer que pour le job de l'analyse ZAP), mais elle évite de surcharger l'image Docker utilisée pour le déploiement. Qui plus est, cette image de déploiement est spécifique à chaque projet et doit donc être réécrire, alors que le script commendant l'exécution de ZAP peut être générique (exception faite de l'URL cible). Inclure l'image à utiliser à ce script renforce cette autonomie, le bloc de code peut littéralement être copié collé d'un projet à l'autre et fonctionner (encore une fois sous réserve de changer l'URL à attaquer).
 % TODO : inclure le snippet de ZAP
 
-Nous nous retrouvons avec une configuration versatile : elle peut être exportée facilement et profite de toute l'expressivité de l'API Python pour ZAP. L'OWASP propose des images Docker de ZAP
-% TODO : lien vers le git zap2docker
-mais elles ne correspondent pas à mon besoin, elles exposent un script nommé zap-scanner qui permet, comme son nom l'indique, de lancer un scanner zZAP en ligne de commande. Pour une utilisation dans le cadre de GitLab-CI, on cherche plutôt des images qui exposent /bin/sh, car cela signifie qu'une fois le container lancé on à accès à /bin/sh et on peut donc utiliser la ligne de commande.
+Nous nous retrouvons avec une configuration versatile : elle peut être exportée facilement et profite de toute l'expressivité de l'API Python pour ZAP. L'OWASP propose des images Docker de ZAP\footnote{\href{https://github.com/zaproxy/zaproxy/wiki/Docker}{La page du wiki correspondante} et \href{https://github.com/zaproxy/zaproxy/tree/develop/build/docker}{le dépôt avec les Dockerfiles}} mais elles ne correspondent pas à mon besoin, elles exposent un script nommé zap-scanner qui permet, comme son nom l'indique, de lancer un scanner ZAP en ligne de commande. Pour une utilisation dans le cadre de GitLab-CI, on cherche plutôt des images qui exposent /bin/sh, car cela signifie qu'une fois le container lancé on à accès à /bin/sh et on peut donc utiliser la ligne de commande.
 
-Bien sûr il existe des images non officielles de ZAP
-% TODO : mettre un lien vers l'image spéciale CI
-mais qui, à chaque fois, ont été créées avec un usage précis en tête plutôt que dans un but de généricité et ne correspondaient donc, encore une fois, pas à mon besoin. La conséquence a été que j'ai utilisé une image générique
-% TODO : chercher le nom de l'image, python3:alpine ?
-qui ne contient que Python et une installation Linux basique, et j'ai installé \textit{via} le .yml ZAP. Le script Python pour contrôler l'attaque était inclus dans le dépôt git, et il ne restait plus qu'à l'appeler en spécifiant, en paramètre, l'URL à attaquer. 
+Bien sûr il existe des images non officielles de ZAP\footnote{E.g. une image pour utiliser ZAP comme un \textit{goal} Maven : \url{https://github.com/pdsoftplan/zap-maven-plugin}} mais qui, à chaque fois, ont été créées avec un usage précis en tête plutôt que dans un but de généricité ou n'étaient plus maintenues et ne correspondaient donc, encore une fois, pas à mon besoin. La conséquence a été que j'ai utilisé une image générique qui ne contient que Python et une installation Linux basique\footnote{à savoir \href{https://github.com/docker-library/python/blob/d3c5f47b788adb96e69477dadfb0baca1d97f764/3.3/alpine3.4/Dockerfile}{python:3.3.6-alpine3.4}, qui a l'avantage d'être plus légère que \href{https://github.com/docker-library/python/blob/d3c5f47b788adb96e69477dadfb0baca1d97f764/3.6/jessie/Dockerfile}{python:latest} qui utilise Debian.}, et j'ai installé \textit{via} le .yml ZAP. Le script Python pour contrôler l'attaque était inclus dans le dépôt git, et il ne restait plus qu'à l'appeler en spécifiant, en paramètre, l'URL à attaquer. 
 
-La dernière étape était de générer, et rendre disponible, un rapport pour que les développeurs puissent prendre des mesures. L'idéal aurait été d'envoyer automatiquement un mail à l'auteur du commit et qui contiendrait le rapport en XML, néanmoins le temps ne m'a pas permis de me pencher sur la faisabilité de cette fonctionnalité. Ce que j'ai  fait en revanche est de créer un artefact, c'est-à-dire de marquer un fichier généré pendant le job comme persistant pour que GitLab le sauvegarder sur le serveur qui héberge les runners et le rende téléchargeable dans son interface web.
-% TODO : snippet pour générer l'artefact
-%TODO : screenshot page de récap du job sur gitlab 
+La dernière étape était de générer, et rendre disponible, un rapport pour que les développeurs puissent prendre des mesures. L'idéal aurait été d'envoyer automatiquement un mail à l'auteur du commit et qui contiendrait le rapport en XML, néanmoins le temps ne m'a pas permis de me pencher sur la faisabilité de cette fonctionnalité. Ce que j'ai  fait en revanche est de créer un artefact, c'est-à-dire de marquer un fichier généré pendant le job comme persistant pour que GitLab le sauvegarder sur le serveur qui héberge les runners et le rende téléchargeable dans son interface web. Un example de la syntaxe utilisée est visible dans le listing~\ref{lst:zap_report}.
+\begin{minipage}{\linewidth}
+	\begin{lstlisting}[caption={Extrait de code qui lance un scanner ZAP en ligne de commande et rend le rapport disponible sur GitLab},label={lst:zap_report}]
+		zap-scanner:
+		stage: test
+		script:
+			- # ...
+				# The output file has to be specified here, otherwise it will be printed on standard output
+			- docker exec zap-sh zap-cli -p 8090 active-scan 'http://itsecgames.com/' > zap-report.xml 
+			- # ...
+		artifacts:
+			paths:
+				# The path to the report has to be specified here to be downloadable 
+			- ./zap-report.xml
+\end{lstlisting}
+\end{minipage}
+
+Dans l'interface web de GitLab, le détail des résultats des builds sont visibles dans une page à part où le rapport peut-être téléchargé (l'icône entourée en rouge dans la figure~\ref{fig:gitlab_build_recap}).
+\begin{figure}
+  \centering
+  \caption{Récapitulatif du \textit{build} et icône de téléchargement du rapport ZAP}
+  \label{fig:gitlab_build_recap}
+  \frame{\includegraphics[width=\textwidth]{images/gitlab_build_recap}}
+\end{figure}
 
 \subsection{Amélioration de l'existant}
 Les deux points précédents étaient des ajouts et, de ce fait, la part la plus visible de mon travail sur le processus de CI, mais une partie en était déjà établie à mon arrivée et j'ai aussi travaillé sur cette partie, pour l'améliorer : principalement du point de vue de la lisibilité et de la maintenabilité.
