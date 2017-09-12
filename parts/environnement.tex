@@ -5,9 +5,9 @@ Pour autant, il est intéressant de résumer l'environnement dans lequel j'ai é
 
 \subsection{CI}
 \subsubsection{GitLab \& GitLab-CI}
-L'intégration continue dans les projets d'Alter Frame se fait à l'aide d'un service proposé par la plateforme d'hébergement de projets informatiques GitLab\footnote{\url{https://about.gitlab.com/}}. Le service en question, GitLab-CI\footnote{\url{https://about.gitlab.com/features/gitlab-ci-cd/}}, propose de mettre en place de l'intégration continue sur les projets hébergés sur GitLab.
+L'intégration continue dans les projets d'Alter Frame se fait à l'aide d'un service proposé par la plateforme d'hébergement de projets informatiques GitLab\cite{gitlab}. Le service en question, GitLab-CI\cite{gitlab-ci}, propose de mettre en place de l'intégration continue sur les projets hébergés sur GitLab.
 
-Au moment de mon arrivée chez Alter Frame la partie CI des projets consistait majoritairement en la compilation des projets et une analyse de code à l'aide d'un plugin SonarQube\footnote{\url{https://www.sonarqube.org/}}, mise en place depuis environ 2 ans.
+Au moment de mon arrivée chez Alter Frame la partie CI des projets consistait majoritairement en la compilation des projets et une analyse de code à l'aide d'un plugin SonarQube\cite{sonarqube}, mise en place depuis environ 2 ans.
 
 Le principe est que les actions décrites ci-dessus, compilation et analyse de code, sont effectuées à chaque push sur le serveur GitLab. Ce fonctionnement peut ensuite être affiné, pour ne se produire que lorsqu'un tag git est pushé ou sur certaines branches (branche master, tag de release, etc).
 
@@ -20,7 +20,7 @@ Il n'y avait néanmoins pas de composante cybersécurité dans le processus de C
 	\caption{Fenêtre de démarrage de ZAP}
 	\label{fig:zap_acceuil}
 \end{figure}
-ZAP\footnote{\url{https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project}} (voir figure~\ref{fig:zap_acceuil}) est un projet open source développé par l'OWASP\footnote{\url{https://www.owasp.org/index.php/Main_Page}}. Il s'agit un proxy qui peut intercepter et analyse le trafic qui traverse la machine hôte. ZAP est un outil de sécurité très intéressant et ce pour un grand nombre de raisons :
+ZAP\cite{zap} (voir figure~\ref{fig:zap_acceuil}) est un projet open source développé par l'OWASP\cite{owasp}. Il s'agit un proxy qui peut intercepter et analyse le trafic qui traverse la machine hôte. ZAP est un outil de sécurité très intéressant et ce pour un grand nombre de raisons :
 \begin{itemize}[label=$\bullet$]
 	\item activement développé\footnote{Plus de 60 commits en juin 2017, voir \url{https://github.com/zaproxy/zaproxy}} ;
 	\item open source et cross-platform ;
@@ -67,7 +67,7 @@ Add-on options:
 
 Je n'avais, avant mon stage, que brièvement eu l'occasion d'utiliser ZAP, au-travers du sous-projet de tests d'intrusion avec M. Pachy. Pouvoir m'entraîner plus longuement avec représentait donc à la fois un intérêt personnel, car cela me permettait d'en apprendre plus sur les vulnérabilités web les plus répandues, et professionnel car c'est un outil dont l'usage pourrait être pertinent pour mes futurs emplois.
 
-ZAP est le seul outil sur lequel il y a vraiment eu un choix à faire car les tests de sécurité n'étaient pas encore implémentés à mon arrivée. Le principal concurrent de ZAP est Burp Suite\footnote{\url{https://portswigger.net/burp}}, une solution non-libre mais qui dispose d'une version gratuite.
+ZAP est le seul outil sur lequel il y a vraiment eu un choix à faire car les tests de sécurité n'étaient pas encore implémentés à mon arrivée. Le principal concurrent de ZAP est Burp Suite\cite{burp}, une solution non-libre mais qui dispose d'une version gratuite.
 
 Les arguments qui ont fait pencher la balance en la faveur de ZAP sont :
 \begin{itemize}[label=$\bullet$]
@@ -77,21 +77,21 @@ Les arguments qui ont fait pencher la balance en la faveur de ZAP sont :
 \end{itemize}
 
 \subsubsection{Docker}
-Docker\footnote{\url{https://www.docker.com/}} est une technologie de virtualisation basée sur des conteneurs, qui vient se place en opposition aux hyperviseurs et machines virtuelles\footnote{Ou VMs pour Virtual Machines}. En plus d'une charte graphique à base de faune marine des plus plaisantes\footnote{\url{https://www.docker.com/sites/default/files/group_5622_0.png}}, la technologie Docker présente plusieurs fonctionnalités qui la rendent intéressante dans le monde de l'industrie informatique :
+Docker\cite{docker} est une technologie de virtualisation basée sur des conteneurs, qui vient se place en opposition aux hyperviseurs et machines virtuelles\footnote{Ou VMs pour Virtual Machines}. En plus d'une charte graphique à base de faune marine des plus plaisantes\footnote{\url{https://www.docker.com/sites/default/files/group_5622_0.png}}, la technologie Docker présente plusieurs fonctionnalités qui la rendent intéressante dans le monde de l'industrie informatique :
 \begin{itemize}[label=$\bullet$]
 	\item un conteneur est plus léger qu'une VM ;
 	\item un conteneur s'exécute de la même façon sur n'importe quelle machine où Docker est installé ;
-	\item un conteneur peut embarquer toute la configuration nécessaire au bon fonctionnement de l'application, et c'est là le point le plus important. L'étape de configuration de l'environnement n'a à être effectuée qu'une seule fois, à la création de l'image\footnote{On ne parle de conteneur qu'une fois l'image en cours d'exécution, cf. différence entre processus et programme}. De plus le système de Docker Store\footnote{\url{https://store.docker.com/}}, proche de celui d'un gestionnaire de paquets, permet au client d'avoir facilement la dernière version possible d'un logiciel, encore une fois en s'abstrayant des changements de configuration qui vont avec la mise-à-jour.
+	\item un conteneur peut embarquer toute la configuration nécessaire au bon fonctionnement de l'application, et c'est là le point le plus important. L'étape de configuration de l'environnement n'a à être effectuée qu'une seule fois, à la création de l'image\footnote{On ne parle de conteneur qu'une fois l'image en cours d'exécution, cf. différence entre processus et programme}. De plus le système de Docker Store\cite{docker_store}, proche de celui d'un gestionnaire de paquets, permet au client d'avoir facilement la dernière version possible d'un logiciel, encore une fois en s'abstrayant des changements de configuration qui vont avec la mise-à-jour.
 \end{itemize}
 
-On assiste donc à une généralisation de l'utilisation de Docker depuis sa première version en 2013, avec de nombreux cas d'utilisation\footnote{\url{https://www.airpair.com/docker/posts/8-proven-real-world-ways-to-use-docker}}, mais aussi à une multiplication des outils en lien avec la technologie Docker comme des outils de gestion de groupes de containers\footnote{e.g. \href{https://kubernetes.io/}{Kubernetes}, \href{https://docs.docker.com/engine/swarm/}{Docker Swarm}}.
+On assiste donc à une généralisation de l'utilisation de Docker depuis sa première version en 2013, avec de nombreux cas d'utilisation\cite{docker_use_cases}, mais aussi à une multiplication des outils en lien avec la technologie Docker comme des outils de gestion de groupes de containers\cite{kubernetes}\cite{swarm}.
 
 GitLab-CI est étroitement lié à Docker : lors d'un push, un container est lancé dans lequel tout le processus de CI est exécuté, en isolation. De ce fait, il n'y avait pas de choix à faire quant à la technologie de virtualisation. Le comportement du processus peut être configuré au-travers d'un script en YAML, il est par exemple possible de sélectionner l'image Docker servant d'environnement d'exécution.
 
 \subsubsection{YAML}
-YAML Ain't Markup Language\footnote{\url{http://yaml.org/}}, de son nom complet, est un \og standard de sérialisation de données \fg. L'objectif de ce langage est de permettre de représenter des donnes à la fois clairement et simplement, principalement en les formatant comme des listes ou des maps.
+YAML Ain't Markup Language\cite{yaml}, de son nom complet, est un \og standard de sérialisation de données \fg. L'objectif de ce langage est de permettre de représenter des donnes à la fois clairement et simplement, principalement en les formatant comme des listes ou des maps.
 
-La syntaxe de YAML est donc sans surprise concise et facile de prise en main\footnote{\url{http://www.yaml.org/refcard.html}} ; qui plus est le code YAML est assez proche de l'anglais pour être compréhensible même par quelqu'un qui n'y est pas familier.
+La syntaxe de YAML est donc sans surprise concise et facile de prise en main\cite{yaml_refcard} ; qui plus est le code YAML est assez proche de l'anglais pour être compréhensible même par quelqu'un qui n'y est pas familier.
 
 Dans le cas qui nous occupe, YAML est le langage permettant de contrôler le processus de CI proposé par GitLab-CI grâce à un script nommé \verb|.gitlab-ci.yml| placé à la racine du projet (l'extrait~\ref{lst:yaml_ci} est un exemple écourté de script YAML sur lequel j'ai travaillé).
 
@@ -129,7 +129,7 @@ zap-docker:
 \subsection{Développement Java}
 Il y a moins à dire sur le développement Java car il s'agit d'un pan de travail très proche de ce que j'ai déjà rencontré par le passé, que ce soit dans des cours ou dans mon précédent stage. Chez Alter Frame, j'ai développé en Java 7 couplé à Swing pour la GUI, le tout dans un environnement Windows en utilisant les classiques Maven et git.
 
-Encore une fois, le projet ne m'ayant pas attendu pour en premier lieu, il n'y avait pas de grande marge de manoeuvre quand à quelles technologies utiliser. L'environnement Windows est indépendant de Java à proprement parler, mais dû à l'utilisation de VBScript\footnote{\url{https://msdn.microsoft.com/fr-fr/library/d1wf56tt\%28v=vs.84\%29.aspx}} pour créer et modifier des classeurs Microsoft Excel.
+Encore une fois, le projet ne m'ayant pas attendu pour en premier lieu, il n'y avait pas de grande marge de manoeuvre quand à quelles technologies utiliser. L'environnement Windows est indépendant de Java à proprement parler, mais dû à l'utilisation de VBScript pour créer et modifier des classeurs Microsoft Excel.
 
 L'incompatibilité entre le projet et Java 8 reste, elle, un mystère\footnote{\url{https://i.pinimg.com/564x/66/ba/a0/66baa08b16a192d752959fa4c29bc96a.jpg}}.
 %\footnote{\url{https://xkcd.com/722/}}.
@@ -141,7 +141,7 @@ J'ai à nouveau eu l'occasion d'utiliser ZAP pendant le déroulement de l'audit.
 Néanmoins, les avantages de ZAP qui ont fait que mon tuteur et moi l'avons retenu pour l'intégration continue s'appliquent toujours ici (excepté pour le contrôle par API/ligne de commande) et le raison du choix de ZAP est donc la même.
 
 \subsubsection{SonarQube}
-SonarQube\footnote{\url{https://www.sonarqube.org/}} est un outil d'analyse de code bien connu. Bien que sa vocation première soit d'améliorer la qualité et la maintenabilité du code analysé, Sonar incorpore aussi des règles de sécurité dans ses patrons de détection. C'est dans cette optique que je l'ai utilisé (la figure~\ref{fig:sonar_sec} liste une partie des vulnérabilités que sait détecter Sonar).
+SonarQube est un outil d'analyse de code bien connu. Bien que sa vocation première soit d'améliorer la qualité et la maintenabilité du code analysé, Sonar incorpore aussi des règles de sécurité dans ses patrons de détection. C'est dans cette optique que je l'ai utilisé (la figure~\ref{fig:sonar_sec} liste une partie des vulnérabilités que sait détecter Sonar).
 
 \begin{figure}{l}
 	\makebox[\textwidth][c]{\includegraphics[width=\paperwidth]{images/sonar_sec_audit}}
@@ -154,9 +154,9 @@ C'est durant l'audit que j'ai majoritairement utilisé Sonar, mais les scripts d
 \subsubsection{JMeter \& SoapUI}
 Ces deux outils, de même que ZAP, avaient déjà été utilisés lors des itérations précédentes de l'audit, et les conserver permettait de comparer facilement les résultats que nous obtiendrions avec les résultats antérieurs. Aussi, en l'absence de raison de ne \emph{pas} les conserver, nous les avons conservés.
 
-SoapUI\footnote{\url{https://www.soapui.org/}} est un outil de test pour applications REST ou SOAP. L'application auditée utilisait le protocole SOAP, et SoapUI nous a servi à modifier et rejouer des requêtes isolées, sans tester les performances de l'application mais pour en saisir le fonctionnement et préparer le véritable test, en plus de vérifier que nous avions bien les droits pour réaliser toutes les opérations prévues.
+SoapUI\cite{soapui} est un outil de test pour applications REST ou SOAP. L'application auditée utilisait le protocole SOAP, et SoapUI nous a servi à modifier et rejouer des requêtes isolées, sans tester les performances de l'application mais pour en saisir le fonctionnement et préparer le véritable test, en plus de vérifier que nous avions bien les droits pour réaliser toutes les opérations prévues.
 
-JMeter\footnote{\url{http://jmeter.apache.org/}} est un outil de test de performances pour applications web en général. Le panel de fonctionnalités qu'il offre est extrêmement large (et en conséquence, sa prise en main est loin d'être triviale) et nous n'en avons utilisé qu'une partie : configurer JMeter comme proxy pour enregistrer un cas d'utilisation typique qui servira de scénario de test (on peut voir les différentes étapes d'un tel scénario dans l'interface de JMeter dans la figure~\ref{fig:jmeter}), puis rejouer celui-ci en boucle et plusieurs fois en parallèle pour tester les limites de l'application.
+JMeter est un outil de test de performances pour applications web en général. Le panel de fonctionnalités qu'il offre est extrêmement large (et en conséquence, sa prise en main est loin d'être triviale) et nous n'en avons utilisé qu'une partie : configurer JMeter comme proxy pour enregistrer un cas d'utilisation typique qui servira de scénario de test (on peut voir les différentes étapes d'un tel scénario dans l'interface de JMeter dans la figure~\ref{fig:jmeter}), puis rejouer celui-ci en boucle et plusieurs fois en parallèle pour tester les limites de l'application.
 \begin{figure}
   \includegraphics[width=\linewidth]{images/jmeter}
   \caption{JMeter, une fois configuré}

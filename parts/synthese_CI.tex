@@ -2,7 +2,7 @@
 \label{sec:synthese_ci}
 L'amélioration du CI d'Alter-Frame et l'ajout de la composante sécurité a été la tâche principale de mon stage.
 
-Un point sur le fonctionnement et la nomenclature de GitLab-CI\footnote{GitLab maintient une page de présentation de leur service CI plus complète \href{https://about.gitlab.com/2016/10/25/gitlab-workflow-an-overview/}{ici}.} : le script de contrôle du processus de CI est le \texttt{.gitlab-ci.yml}, ou le \texttt{.yml} pour faire court. Le comportement par défaut pour ce script est de définir une image Docker, avec la balise \texttt{image} (on aurait par exemple \texttt{image: openjdk:latest} pour aller chercher l'image openjdk sur le hub docker, et récupérer la version taguée "latest").
+Un point sur le fonctionnement et la nomenclature de GitLab-CI\cite{gitlab_ci_workflow} : le script de contrôle du processus de CI est le \texttt{.gitlab-ci.yml}, ou le \texttt{.yml} pour faire court. Le comportement par défaut pour ce script est de définir une image Docker, avec la balise \texttt{image} (on aurait par exemple \texttt{image: openjdk:latest} pour aller chercher l'image openjdk sur le hub docker, et récupérer la version taguée "latest").
 
 Cette image va être instanciée en un container au début de l'exécution du script, et ce dernier se déroulera dans l'environnement du container. Utiliser l'image openjdk par exemple donne accès à une JDK et permet donc d'appeler des fonctions telles que javac ou d'installer des utilitaires qui en dépendent tels que SonarQube.
 
@@ -18,9 +18,9 @@ La figure~\ref{fig:ci_flow} résume le fonctionnement de GitLab-CI.
 \end{figure}
 
 \subsection{Déployer automatiquement les applications web}
-Mon intervention sur cette partie a été en commun avec un autre ingénieur d'Alter Frame. Nous devions faire en sorte de compiler les applications web en PHP, et générer à partir de là une image Docker contenant l'application\footnote{La documentation sur l'utilisation de \texttt{docker build} dans GitLab-CI : \url{https://docs.gitlab.com/ee/ci/docker/using\_docker\_build.html\#using-docker-build}} et toute la configuration requise, puis  déployer cette image sur un serveur appartenant à Alter Frame.
+Mon intervention sur cette partie a été en commun avec un autre ingénieur d'Alter Frame. Nous devions faire en sorte de compiler les applications web en PHP, et générer à partir de là une image Docker contenant l'application et toute la configuration requise, puis  déployer cette image sur un serveur appartenant à Alter Frame.
 
-Voilà pour la théorie. La pratique a été une succession d'approches différentes qui n'ont pas toujours été fructueuses, et beaucoup d'essai et échec permettant d'avancer petit à petit ; il faut savoir que la documentation de GitLab-CI sur le sujet\footnote{\url{https://docs.gitlab.com/ce/ci/docker/using_docker_build.html}} n'est pas parfaitement complète et fait la supposition que l'utilisateur possède une bonne connaissance de Docker.
+Voilà pour la théorie. La pratique a été une succession d'approches différentes qui n'ont pas toujours été fructueuses, et beaucoup d'essai et échec permettant d'avancer petit à petit ; il faut savoir que la documentation de GitLab-CI sur le sujet\cite{gitlab_docker_build} n'est pas parfaitement complète et fait la supposition que l'utilisateur possède une bonne connaissance de Docker.
 
 La première approche fut d'exécuter le runner en mode shell plutôt que Docker. C'est la méthode la plus facile mais aussi celle qui s'éloigne le plus du comportement par défaut et qui fait perdre la grande flexibilité qu'offre le fonctionnement par image Docker : les différents outils doivent être définitivement installés sur le serveur qui héberge les runners.
 
