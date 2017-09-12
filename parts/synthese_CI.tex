@@ -4,29 +4,29 @@ L'amélioration du CI d'Alter-Frame et l'ajout de la composante sécurité a ét
 
 Un point sur le fonctionnement et la nomenclature de GitLab-CI\footnote{GitLab maintient une page de présentation de leur service CI plus complète \href{https://about.gitlab.com/2016/10/25/gitlab-workflow-an-overview/}{ici}.} : le script de contrôle du processus de CI est le \texttt{.gitlab-ci.yml}, ou le \texttt{.yml} pour faire court. Le comportement par défaut pour ce script est de définir une image Docker, avec la balise \texttt{image} (on aurait par exemple \texttt{image: openjdk:latest} pour aller chercher l'image openjdk sur le hub docker, et récupérer la version taguée "latest").
 
-Cette image va être instanciée en un container au début de l'exécution du script, et ce dernier se déroulera dans l'environnement du container. Utiliser l'image openjdk par exemple donne accès à une JDK et permet donc d'appeler des fonctions telles que javac ou d'installer des utilitaires qui en dépendent tels que SonarQube. 
+Cette image va être instanciée en un container au début de l'exécution du script, et ce dernier se déroulera dans l'environnement du container. Utiliser l'image openjdk par exemple donne accès à une JDK et permet donc d'appeler des fonctions telles que javac ou d'installer des utilitaires qui en dépendent tels que SonarQube.
 
-On appelle "runner" l'hôte sur lequel s'exécute l'image docker, et "job" chacune des fonctions en lesquelles le script peut être séparé. Eux-mêmes peuvent être regroupés en stages : les stages s'exécutent dans l'ordre dans lequel ils sont déclarés et si un stage échoue, le runner s'arrête. En revanche, l'ordre des jobs au sein d'un stage est à la discrétion du runner et ne peut pas être connu. 
+On appelle "runner" l'hôte sur lequel s'exécute l'image docker, et "job" chacune des fonctions en lesquelles le script peut être séparé. Eux-mêmes peuvent être regroupés en stages : les stages s'exécutent dans l'ordre dans lequel ils sont déclarés et si un stage échoue, le runner s'arrête. En revanche, l'ordre des jobs au sein d'un stage est à la discrétion du runner et ne peut pas être connu.
 
-La figure~\ref{fig:ci_flow} résume le fonctionnement de GitLab-CI. 
+La figure~\ref{fig:ci_flow} résume le fonctionnement de GitLab-CI.
 
 \begin{figure}
-  \centering
-  \caption{Résumé du processus de CI (\emph{build}, \emph{test} et \emph{deploy} sont les stages par défaut)}
-  \label{fig:ci_process}
-  \frame{\includegraphics[width=\textwidth]{images/process_ci.pdf}}
+	\centering
+	\caption{Résumé du processus de CI (\emph{build}, \emph{test} et \emph{deploy} sont les stages par défaut)}
+	\label{fig:ci_process}
+	\frame{\includegraphics[width=\textwidth]{images/process_ci.pdf}}
 \end{figure}
 
 \subsection{Déployer automatiquement les applications web}
-Mon intervention sur cette partie a été en commun avec un autre ingénieur d'Alter Frame. Nous devions faire en sorte de compiler les applications web en PHP, et générer à partir de là une image Docker contenant l'application\footnote{La documentation sur l'utilisation de \texttt{docker build} dans GitLab-CI : \url{https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#using-docker-build}} et toute la configuration requise, puis  déployer cette image sur un serveur appartenant à Alter Frame.
+Mon intervention sur cette partie a été en commun avec un autre ingénieur d'Alter Frame. Nous devions faire en sorte de compiler les applications web en PHP, et générer à partir de là une image Docker contenant l'application\footnote{La documentation sur l'utilisation de \texttt{docker build} dans GitLab-CI : \url{https://docs.gitlab.com/ee/ci/docker/using\_docker\_build.html\#using-docker-build}} et toute la configuration requise, puis  déployer cette image sur un serveur appartenant à Alter Frame.
 
 Voilà pour la théorie. La pratique a été une succession d'approches différentes qui n'ont pas toujours été fructueuses, et beaucoup d'essai et échec permettant d'avancer petit à petit ; il faut savoir que la documentation de GitLab-CI sur le sujet\footnote{\url{https://docs.gitlab.com/ce/ci/docker/using_docker_build.html}} n'est pas parfaitement complète et fait la supposition que l'utilisateur possède une bonne connaissance de Docker.
 
-La première approche fut d'exécuter le runner en mode shell plutôt que Docker. C'est la méthode la plus facile mais aussi celle qui s'éloigne le plus du comportement par défaut et qui fait perdre la grande flexibilité qu'offre le fonctionnement par image Docker : les différents outils doivent être définitivement installés sur le serveur qui héberge les runners. 
+La première approche fut d'exécuter le runner en mode shell plutôt que Docker. C'est la méthode la plus facile mais aussi celle qui s'éloigne le plus du comportement par défaut et qui fait perdre la grande flexibilité qu'offre le fonctionnement par image Docker : les différents outils doivent être définitivement installés sur le serveur qui héberge les runners.
 
 En plus de ce défaut, cette méthode est discutable d'un point de vue sécurité car elle exige que l'utilisateur qui exécute le script ait des privilèges administrateur, donc indirectement toute personne qui intervient sur les scripts .yml\footnote{Un article sur la sécurité du groupe Docker : \url{https://www.andreas-jung.com/contents/on-docker-security-docker-group-considered-harmful}}.
 
-Au final et malgré ses points négatifs, cette méthode nous a permis d'arriver à nos fins, mais nous ne l'avons pas retenue, pour partie pour les raisons exposées plus haut et pour partie pour des raisons propres à la compilation de l'application en PHP qui bloquaient l'ingénieur avec lequel j'ai travaillé. 
+Au final et malgré ses points négatifs, cette méthode nous a permis d'arriver à nos fins, mais nous ne l'avons pas retenue, pour partie pour les raisons exposées plus haut et pour partie pour des raisons propres à la compilation de l'application en PHP qui bloquaient l'ingénieur avec lequel j'ai travaillé.
 
 Deuxième approche, plus en accord avec la philosophie de GitLab-CI : utiliser docker-in-docker (dind). L'idée est simple et la mise en oeuvre plus complexe (pour changer). Il s'agit de fournir au runner une image disposant des utilitaires nécessaires pour construire une image docker, et finalement de réaliser le même processus qu'en mode shell, mais dans le contexte isolé du container docker parent.
 
@@ -36,8 +36,8 @@ Bien entendu cette méthode aussi avait un coût. Tout d'abord, GitLab-CI met en
 
 Ensuite, déployer et configurer une application est un procédé lourd qui peut impliquer l'installation de dépendances. En réalisant cela dans un container, deux cas de figure se présentent :
 \begin{itemize}[label=$\bullet$]
-\item soit on utilise une image générique proposant l'outil de base (e.g. openjdk:latest pour un projet Java) et on installe dans le .yml les différentes dépendance. Ce n'est pas compliqué de mise en oeuvre, mais chaque exécution du script sera longue, et la lenteur est vite limitante dans le domaine de l'intégration continue (le développeur n'a pas toujours le temps d'attendre qu'un procédé long se termine) ;
-\item soit on crée une image personnalisée qui embarque déjà les dépendances requises, cela accélère le processus de CI mais rajoute du travail en amont avec la création et la configuration de l'image, ainsi que son stockage sur un registre Docker. De plus, le processus perd en transparence car la configuration de l'environnement devient cachée au développeur qui ne voit que le nom de l'image utilisée. Bien sûr, cela peut aussi être vu comme un avantage car le .yml s'en trouve d'autant allégé, et ne contient au final plus que l'essentiel du point de vue intégration et déploiement. 
+	\item soit on utilise une image générique proposant l'outil de base (e.g. openjdk:latest pour un projet Java) et on installe dans le .yml les différentes dépendance. Ce n'est pas compliqué de mise en oeuvre, mais chaque exécution du script sera longue, et la lenteur est vite limitante dans le domaine de l'intégration continue (le développeur n'a pas toujours le temps d'attendre qu'un procédé long se termine) ;
+	\item soit on crée une image personnalisée qui embarque déjà les dépendances requises, cela accélère le processus de CI mais rajoute du travail en amont avec la création et la configuration de l'image, ainsi que son stockage sur un registre Docker. De plus, le processus perd en transparence car la configuration de l'environnement devient cachée au développeur qui ne voit que le nom de l'image utilisée. Bien sûr, cela peut aussi être vu comme un avantage car le .yml s'en trouve d'autant allégé, et ne contient au final plus que l'essentiel du point de vue intégration et déploiement.
 \end{itemize}
 \begin{minipage}{\linewidth}
 	\begin{lstlisting}[caption={Dockerfile utilisé pour le job de déploiement de l'application},label={lst:dockerfile}]
@@ -58,9 +58,7 @@ Ensuite, déployer et configurer une application est un procédé lourd qui peut
 \end{lstlisting}
 \end{minipage}
 
-C'est la deuxième approche que j'ai conservée (voir le code de l'image en question dans le listing~\ref{lst:dockerfile}), mais non sans avoir testé la première au préalable. Avoir la configuration directement dans le .yml était source de complexité (appeler un .sh à l'intérieur du .yml pour extenaliser de gros blocs de code) et de bugs (de petits changements pouvaient entraîner des résultats inattendus, surtout compte tenu du fait que nous étions plusieurs à intervenir sur le .yml).
-
-% TODO : parler un peu de ce que j'ai dû faire dans le dockerfile comme config
+C'est la deuxième approche que j'ai conservée (voir le code de l'image en question dans le listing~\ref{lst:dockerfile}), mais non sans avoir testé la première au préalable. Avoir la configuration directement dans le .yml était source de complexité (appeler un .sh à l'intérieur du .yml pour externaliser de gros blocs de code) et de bugs (de petits changements pouvaient entraîner des résultats inattendus, surtout compte tenu du fait que nous étions plusieurs à intervenir sur le .yml).
 
 Au final, cette méthode a tenu ses promesses : nous nous retrouvions avec une configuration sauvegardée à part, facile et rapide à importer, et qui comportait toutes les dépendances requises pour le projet. De plus un runner avait été spécialement configuré pour permettre l'utilisation de dind, restreinte par défaut, et générer l'image qui encapsulait l'appli web développée par Alter Frame devenait possible.
 
@@ -71,16 +69,24 @@ De ces deux solutions, c'est celle de l'API qui est la plus complète : ZAP en l
 
 Néanmoins, la solution de l'API rajoute une contrainte : en plus de ZAP, il faut que l'environnement de CI dispose du langage de l'API. Les deux APIs principales maintenues par la communauté de développeurs ``officiels'' de ZAP sont celles en Java et en Python. J'ai retenu l'utilisation de Python d'une part car ce langage est concis et se prête très bien à l'écriture de courts scripts, d'autre part pour avoir l'occasion de m'en servir et développer des compétences qui me seraient utiles plus tard dans mon parcours professionnel (ce qui sera le cas dès octobre, cf section~\ref{sec:avenir}).
 
-Plutôt que de rajouter encore un élément à l'image Docker créée spécialement au point précédent, j'ai préféré utiliser une fonctionnalité très intéressante de GitLab-CI, celle de pouvoir spécifier une image différente pour chaque job. Elle rajoute en verbosité au script car l'image doit donc être spécifiée pour chaque job sans exception (impossible d'en utiliser une par défaut et de ne la remplacer que pour le job de l'analyse ZAP), mais elle évite de surcharger l'image Docker utilisée pour le déploiement. Qui plus est, cette image de déploiement est spécifique à chaque projet et doit donc être réécrire, alors que le script commendant l'exécution de ZAP peut être générique (exception faite de l'URL cible). Inclure l'image à utiliser à ce script renforce cette autonomie, le bloc de code peut littéralement être copié collé d'un projet à l'autre et fonctionner (encore une fois sous réserve de changer l'URL à attaquer).
+Plutôt que de rajouter encore un élément à l'image Docker créée spécialement au point précédent, j'ai préféré utiliser une fonctionnalité très intéressante de GitLab-CI, celle de pouvoir spécifier une image différente pour chaque job. Elle rajoute en verbosité au script car l'image doit donc être spécifiée pour chaque job sans exception (impossible d'en utiliser une par défaut et de ne la remplacer que pour le job de l'analyse ZAP), mais elle évite de surcharger l'image Docker utilisée pour le déploiement. Qui plus est, cette image de déploiement est spécifique à chaque projet et doit donc être réécrire, alors que le script commandant l'exécution de ZAP peut être générique (exception faite de l'URL cible). Inclure l'image à utiliser à ce script renforce cette autonomie, le bloc de code peut littéralement être copié collé d'un projet à l'autre et fonctionner (encore une fois sous réserve de changer l'URL à attaquer).
 % TODO : inclure le snippet de ZAP
 
 Nous nous retrouvons avec une configuration versatile : elle peut être exportée facilement et profite de toute l'expressivité de l'API Python pour ZAP. L'OWASP propose des images Docker de ZAP\footnote{\href{https://github.com/zaproxy/zaproxy/wiki/Docker}{La page du wiki correspondante} et \href{https://github.com/zaproxy/zaproxy/tree/develop/build/docker}{le dépôt avec les Dockerfiles}} mais elles ne correspondent pas à mon besoin, elles exposent un script nommé zap-scanner qui permet, comme son nom l'indique, de lancer un scanner ZAP en ligne de commande. Pour une utilisation dans le cadre de GitLab-CI, on cherche plutôt des images qui exposent /bin/sh, car cela signifie qu'une fois le container lancé on à accès à /bin/sh et on peut donc utiliser la ligne de commande.
 
-Bien sûr il existe des images non officielles de ZAP\footnote{E.g. une image pour utiliser ZAP comme un \textit{goal} Maven : \url{https://github.com/pdsoftplan/zap-maven-plugin}} mais qui, à chaque fois, ont été créées avec un usage précis en tête plutôt que dans un but de généricité ou n'étaient plus maintenues et ne correspondaient donc, encore une fois, pas à mon besoin. La conséquence a été que j'ai utilisé une image générique qui ne contient que Python et une installation Linux basique\footnote{à savoir \href{https://github.com/docker-library/python/blob/d3c5f47b788adb96e69477dadfb0baca1d97f764/3.3/alpine3.4/Dockerfile}{python:3.3.6-alpine3.4}, qui a l'avantage d'être plus légère que \href{https://github.com/docker-library/python/blob/d3c5f47b788adb96e69477dadfb0baca1d97f764/3.6/jessie/Dockerfile}{python:latest} qui utilise Debian.}, et j'ai installé \textit{via} le .yml ZAP. Le script Python pour contrôler l'attaque était inclus dans le dépôt git, et il ne restait plus qu'à l'appeler en spécifiant, en paramètre, l'URL à attaquer. 
+Bien sûr il existe des images non officielles de ZAP\footnote{E.g. une image pour utiliser ZAP comme un \textit{goal} Maven : \url{https://github.com/pdsoftplan/zap-maven-plugin}} mais qui, à chaque fois, ont été créées avec un usage précis en tête plutôt que dans un but de généricité ou n'étaient plus maintenues et ne correspondaient donc, encore une fois, pas à mon besoin. La conséquence a été que j'ai utilisé une image générique qui ne contient que Python et une installation Linux basique\footnote{à savoir \href{https://github.com/docker-library/python/blob/d3c5f47b788adb96e69477dadfb0baca1d97f764/3.3/alpine3.4/Dockerfile}{python:3.3.6-alpine3.4}, qui a l'avantage d'être plus légère que \href{https://github.com/docker-library/python/blob/d3c5f47b788adb96e69477dadfb0baca1d97f764/3.6/jessie/Dockerfile}{python:latest} qui utilise Debian.}, et j'ai installé \textit{via} le .yml ZAP. Le script Python pour contrôler l'attaque était inclus dans le dépôt git, et il ne restait plus qu'à l'appeler en spécifiant, en paramètre, l'URL à attaquer.
 
-La dernière étape était de générer, et rendre disponible, un rapport pour que les développeurs puissent prendre des mesures. L'idéal aurait été d'envoyer automatiquement un mail à l'auteur du commit et qui contiendrait le rapport en XML, néanmoins le temps ne m'a pas permis de me pencher sur la faisabilité de cette fonctionnalité. Ce que j'ai  fait en revanche est de créer un artefact, c'est-à-dire de marquer un fichier généré pendant le job comme persistant pour que GitLab le sauvegarder sur le serveur qui héberge les runners et le rende téléchargeable dans son interface web. Un example de la syntaxe utilisée est visible dans le listing~\ref{lst:zap_report}.
+\begin{figure}[h]
+	\centering
+	\caption{Récapitulatif du \textit{build} et icône de téléchargement du rapport ZAP}
+	\label{fig:gitlab_build_recap}
+	\frame{\includegraphics[width=\textwidth]{images/gitlab_build_recap}}
+\end{figure}
+
+La dernière étape était de générer, et rendre disponible, un rapport pour que les développeurs puissent prendre des mesures. L'idéal aurait été d'envoyer automatiquement un mail à l'auteur du commit et qui contiendrait le rapport en XML, néanmoins le temps ne m'a pas permis de me pencher sur la faisabilité de cette fonctionnalité. Ce que j'ai  fait en revanche est de créer un artefact, c'est-à-dire de marquer un fichier généré pendant le job comme persistant pour que GitLab le sauvegarder sur le serveur qui héberge les runners et le rende téléchargeable dans son interface web. Un example de la syntaxe utilisée est visible dans le listing~\ref{lst:zap-report}.
+
 \begin{minipage}{\linewidth}
-	\begin{lstlisting}[caption={Extrait de code qui lance un scanner ZAP en ligne de commande et rend le rapport disponible sur GitLab},label={lst:zap_report}]
+	\begin{lstlisting}[caption={Extrait de code qui lance un scanner ZAP en ligne de commande et rend le rapport disponible sur GitLab},label={lst:zap-report}]
 		zap-scanner:
 		stage: test
 		script:
@@ -96,13 +102,43 @@ La dernière étape était de générer, et rendre disponible, un rapport pour q
 \end{minipage}
 
 Dans l'interface web de GitLab, le détail des résultats des builds sont visibles dans une page à part où le rapport peut-être téléchargé (l'icône entourée en rouge dans la figure~\ref{fig:gitlab_build_recap}).
-\begin{figure}
-  \centering
-  \caption{Récapitulatif du \textit{build} et icône de téléchargement du rapport ZAP}
-  \label{fig:gitlab_build_recap}
-  \frame{\includegraphics[width=\textwidth]{images/gitlab_build_recap}}
-\end{figure}
 
 \subsection{Amélioration de l'existant}
 Les deux points précédents étaient des ajouts et, de ce fait, la part la plus visible de mon travail sur le processus de CI, mais une partie en était déjà établie à mon arrivée et j'ai aussi travaillé sur cette partie, pour l'améliorer : principalement du point de vue de la lisibilité et de la maintenabilité.
 
+On peut résumer mon intervention en trois points importants :
+
+\begin{itemize}[label=$\bullet$]
+	\item regrouper le code dupliqué et utiliser des ancres\footnote{\url{https://docs.gitlab.com/ee/ci/yaml/\#anchors}} et des templates (cf. listing~\ref{lst:anchor}) ;
+	\item utiliser des images Docker pré-configurées plutôt que télécharger et installer un logiciel, autant que possible ;
+	\item stocker les valeurs variables (numéro de version, identifiants de connexion, etc) dans des variables (précisément). À noter que GitLab-CI offre une mécanique de variables secrètes\footnote{\url{https://docs.gitlab.com/ee/ci/variables/\#secret-variables}}.
+\end{itemize}
+
+\begin{minipage}{\linewidth}
+	\begin{lstlisting}[caption={Template d'installation et utilisation de Maven, et son appel dans un job},label={lst:anchor}]
+		## Template for building code
+		.build_template: &maven_clean_install
+			script:
+				## Install maven
+				- wget -q http://wwwftp.ciril.fr/pub/apache/maven/maven-${MAVEN_MAJOR_VERSION}/${MAVEN_FULL_VERSION}/binaries/apache-maven-${MAVEN_FULL_VERSION}-bin.zip
+				- unzip -qq apache-maven-${MAVEN_FULL_VERSION}-bin.zip
+				- rm apache-maven-${MAVEN_FULL_VERSION}-bin.zip
+			
+				## Install and populate database
+				- export
+				- apt-get update && apt-get --assume-yes install mysql-client
+				- mysql --user=$MYSQL_ROOT_USERNAME --password="$MYSQL_ROOT_PASSWORD" --host=mysql "$MYSQL_DATABASE" < ./server/sql/db-structure.sql
+				
+				## Build application
+				- ./apache-maven-${MAVEN_FULL_VERSION}/bin/mvn -f ./root/pom.xml clean install
+
+				mvn:
+				stage: build
+				## Importing services
+				services: *mysql
+				## Merging anchored code with current job
+				<<: *maven_clean_install
+				only:
+					- develop
+\end{lstlisting}
+\end{minipage}
