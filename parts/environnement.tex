@@ -22,7 +22,7 @@ Il n'y avait néanmoins pas de composante cybersécurité dans le processus de C
 \end{figure}
 ZAP\cite{zap} (voir figure~\ref{fig:zap_acceuil}) est un projet open source développé par l'OWASP\cite{owasp}. Il s'agit un proxy qui peut intercepter et analyse le trafic qui traverse la machine hôte. ZAP est un outil de sécurité très intéressant et ce pour un grand nombre de raisons :
 \begin{itemize}[label=$\bullet$]
-	\item activement développé\footnote{Plus de 60 commits en juin 2017, voir \url{https://github.com/zaproxy/zaproxy}} ;
+	\item activement développé\cite{zap_git} ;
 	\item open source et cross-platform ;
 	\item OWASP est une référence dans le monde de la sécurité ;
 	\item une large communauté, et donc une grande quantité de ressources sur laquelle s'appuyer ;
@@ -149,7 +149,7 @@ SonarQube est un outil d'analyse de code bien connu. Bien que sa vocation premi�
 	\label{fig:sonar_sec}
 \end{figure}
 
-C'est durant l'audit que j'ai majoritairement utilisé Sonar, mais les scripts de CI qui étaient en plus avant mon arrivée chez Alter Frame incorporaient déjà des analyses Sonar effectuées sur le code. C'est d'ailleurs de ce fait (mon tuteur ayant déjà de l'expérience avec ce logiciel) ainsi que du faible nombre de concurrents gratuits\footnote{Un exemple possible mais peu connu est \href{http://www.squale.org/}{Squale}.} que nous avons choisi d'utiliser Sonar dans ce cas de figure.
+C'est durant l'audit que j'ai majoritairement utilisé Sonar, mais les scripts de CI qui étaient en plus avant mon arrivée chez Alter Frame incorporaient déjà des analyses Sonar effectuées sur le code. C'est d'ailleurs de ce fait (mon tuteur ayant déjà de l'expérience avec ce logiciel) ainsi que du faible nombre de concurrents gratuits\cite{squale} que nous avons choisi d'utiliser Sonar dans ce cas de figure.
 
 \subsubsection{JMeter \& SoapUI}
 Ces deux outils, de même que ZAP, avaient déjà été utilisés lors des itérations précédentes de l'audit, et les conserver permettait de comparer facilement les résultats que nous obtiendrions avec les résultats antérieurs. Aussi, en l'absence de raison de ne \emph{pas} les conserver, nous les avons conservés.

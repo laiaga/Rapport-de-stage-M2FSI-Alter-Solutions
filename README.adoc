@@ -10,7 +10,6 @@ https://www.overleaf.com/latex/templates/climate-policy-initiative-report-templa
 
 .TODO List
 * Changer screenshot de ZAP par 1 pris en cours d'utilisation sur DVWA (par exemple) => plus réaliste
-* Changer les footnotes pour des notes en fin de rapport
 * Vérifier que tous les acronymes sont expliqués lors de leur première apparition (et pas après)
 * Vérifier que tous les logiciels/frameworks/etc ont un lien lors de leur première apparition (et pas après)
 * Concordance des temps
