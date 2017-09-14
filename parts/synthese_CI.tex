@@ -35,7 +35,7 @@ Les inconvénients de la méthode shell disparaissent : plus besoin d'installer 
 Bien entendu cette méthode aussi avait un coût. Tout d'abord, GitLab-CI met en place des protections pour éviter que tout développeur puisse, par défaut, avoir accès à ces fonctionnalités et il faut donc une étape de configuration supplémentaire au niveau des runners pour utiliser dind.
 
 Ensuite, déployer et configurer une application est un procédé lourd qui peut impliquer l'installation de dépendances. En réalisant cela dans un container, deux cas de figure se présentent :
-\begin{itemize}[label=$\bullet$]
+\begin{itemize}
 	\item soit on utilise une image générique proposant l'outil de base (e.g. openjdk:latest pour un projet Java) et on installe dans le .yml les différentes dépendance. Ce n'est pas compliqué de mise en oeuvre, mais chaque exécution du script sera longue, et la lenteur est vite limitante dans le domaine de l'intégration continue (le développeur n'a pas toujours le temps d'attendre qu'un procédé long se termine) ;
 	\item soit on crée une image personnalisée qui embarque déjà les dépendances requises, cela accélère le processus de CI mais rajoute du travail en amont avec la création et la configuration de l'image, ainsi que son stockage sur un registre Docker. De plus, le processus perd en transparence car la configuration de l'environnement devient cachée au développeur qui ne voit que le nom de l'image utilisée. Bien sûr, cela peut aussi être vu comme un avantage car le .yml s'en trouve d'autant allégé, et ne contient au final plus que l'essentiel du point de vue intégration et déploiement.
 \end{itemize}
@@ -108,7 +108,7 @@ Les deux points précédents étaient des ajouts et, de ce fait, la part la plus
 
 On peut résumer mon intervention en trois points importants :
 
-\begin{itemize}[label=$\bullet$]
+\begin{itemize}
 	\item regrouper le code dupliqué et utiliser des ancres\cite{yaml_anchors} et des templates (cf. listing~\ref{lst:anchor}) ;
 	\item utiliser des images Docker pré-configurées plutôt que télécharger et installer un logiciel, autant que possible ;
 	\item stocker les valeurs variables (numéro de version, identifiants de connexion, etc) dans des variables (précisément). À noter que GitLab-CI offre une mécanique de variables secrètes\cite{yaml_variables}.

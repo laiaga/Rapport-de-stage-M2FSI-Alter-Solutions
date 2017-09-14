@@ -13,13 +13,49 @@ Alter Solutions Engineering est une société de conseil en hautes technologies 
 	\label{fig:filiales}
 	\frame{\includegraphics[width=\textwidth]{images/filiales_allinone.pdf}}
 \end{figure}
+\definecolor{ppurple}{HTML}{9F4C7C}
 \begin{figure}
-	\frame{\begin{tikzpicture}
-			\pie[color ={black!80!green, black!60!green, black!40!green,  black!20!green, green!60, green!30}, explode=0.1]{33/Énergies, 20/Aéronautique spatial et défense, 18/Transports, 11/Digital et numérique, 10/Industrie, 8/Sciences de la vie}
-		\end{tikzpicture}}
-	\caption{Répartition de l'activité des différentes filiales d'Alter Solutions Engineering}
-	\label{fig:activite}
+	\frame{
+		\begin{tikzpicture}
+			\begin{axis}
+				[
+					axis lines*=left,
+					xbar,
+					xlabel={Pourcentage d'activité},
+					symbolic y coords={Énergies, Aéronautique spatial et défense, Transports, Digital et numérique, Industrie, Sciences de la vie},
+					ytick=data,
+					xmin=0,
+					xmax=50,
+					nodes near coords={\pgfmathprintnumber\pgfplotspointmeta\%},
+    			nodes near coords align={horizontal}
+				]
+				\addplot
+				[
+					draw=ppurple, 
+					pattern=horizontal lines light ppurple
+				]
+				coordinates
+				{
+					(33,Énergies)
+					(20,Aéronautique spatial et défense)
+					(18,Transports)
+					(11,Digital et numérique)
+					(10,Industrie)
+					(8,Sciences de la vie)
+				};
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Répartition de l'activité des différentes filiales d'Alter Solutions Engineering}
+		\label{fig:activite}
+	}
 \end{figure}
+% \begin{figure}
+% 	\frame{\begin{tikzpicture}
+% 			\pie[color={black!80!red, black!60!purple, black!40!purple,  black!20!purple, purple!60, purple!30}, explode=0.1]{33/Énergies, 20/Aéronautique spatial et défense, 18/Transports, 11/Digital et numérique, 10/Industrie, 8/Sciences de la vie}
+% 		\end{tikzpicture}}
+% 	\caption{Répartition de l'activité des différentes filiales d'Alter Solutions Engineering}
+% 	\label{fig:activite}
+% \end{figure}
 
 \subsubsection{Alter Solutions}
 Cette filiale est spécialisée dans le conseil en ingénierie, notamment dans les domaines de l'énergie, des transports, des sciences de la vie, du digital et du numérique.
@@ -31,7 +67,7 @@ Alter Defence and Security est également la filiale d'Alter Solutions Engineeri
 
 \subsubsection{Alter Frame}
 Alter Frame enfin est la branche spécialisée dans l'édition de logiciels et celle que j'ai rejoint durant mon stage. C'est une ESN\cite{esn_wiki}\footnote{Entreprise de Services du Numérique} dont l'activité est elle-même répartie en deux catégories :
-\begin{itemize}[label=$\bullet$]
+\begin{itemize}
 	\item le conseil, c'est-à-dire le fait de fournir des spécialistes d'un domaine du numérique pour la durée d'un contrat à un client ;
 	\item le développement de logiciels au forfait, c'est-à-dire le fait de prendre commande d'un logiciel à réaliser en interne et de le livrer à la fin du contrat.
 \end{itemize}
@@ -39,7 +75,7 @@ Alter Frame enfin est la branche spécialisée dans l'édition de logiciels et c
 \subsection{Un peu plus de détails sur Alter Frame}
 \label{subsec:frame}
 Bien qu'Alter Frame ait des clients et des domaines d'intervention variés, en termes de technologies il y a trois pôles de compétences qui sont caractéristiques de l'entreprise et reviennent le plus régulièrement :
-\begin{itemize}[label=$\bullet$]
+\begin{itemize}
 	\item Java ;
 	\item .NET ;
 	\item PHP.
@@ -48,7 +84,7 @@ Bien qu'Alter Frame ait des clients et des domaines d'intervention variés, en t
 Bien que mon stage se soit divisé en deux grands axes, mon travail a été dans tous les cas lié au pôle de développement Java et au responsable technique sous la direction de qui j'ai travaillé. En conséquence j'ai participé à plusieurs projets Java de manière anecdotique, en plus du projet principal que je détaillerai en partie~\ref{sec:sujet}.
 
 Quelques projets notables d'Alter Frame, mais sur lesquels je n'ai pas eu l'occasion de travailler :
-\begin{itemize}[label=$\bullet$]
+\begin{itemize}
 	\item interface de \textit{monitoring} de plateformes pétrolières pour tablettes ;
 	\item plateforme web permettant d'accéder facilement à des exécutables des différents projets d'Alter Frame, à destination des commerciaux des autres branches de la compagnie ;
 	\item outil de vérification de conformité vis-à-vis du futur règlement européen sur la protection des données\cite{cnil}.

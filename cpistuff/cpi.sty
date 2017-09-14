@@ -1,17 +1,20 @@
 \usepackage{color} %include colors
 \usepackage[T1]{fontenc} %include font support
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{lmodern} %make fonts look better
 \usepackage[frenchb]{babel}
+% Tell Babel not to manage lists
+\frenchbsetup{StandardLists=true}
 %\usepackage{garamond} %include garamond
 \usepackage{helvet} %include helvetica
-%\usepackage{xcolor,mdframed,caption} %for the box
 \usepackage{fancyhdr}
 \usepackage{hyperref}
 \usepackage{amssymb}
 \usepackage{enumitem}
 % package de dessin de graphiques
-\usepackage{pgf-pie}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{patterns}
 \usetikzlibrary{babel}
 % Blocs de code
 \usepackage{listings}
@@ -19,12 +22,12 @@
 % Bibliography
 \usepackage[
   backend=biber,
-  style=alphabetic,%numeric-comp
+  style=numeric-comp,%numeric-comp%
   sortlocale=fr_FR,
-  sort=none,
+  sorting=none,
   url=true, 
   doi=true,
-  eprint=false
+  eprint=false,
   hyperref=true,
   backref=true,
   alldates=edtf
@@ -59,7 +62,7 @@
 \renewcommand{\familydefault}{\sfdefault} %Set default font to sans serif - must specify where roman is used
 
 \newgeometry{margin = 1in}
-\newcommand{\callout}[1]{{\large\emph{\textcolor{amuBlue}{#1}}}}
+\newcommand{\callout}[1]{{\large\emph{\textcolor{aleonardiPurple}{#1}}}}
 \renewcommand{\frame}[1]{\begin{framed} {\color{black} #1} \end{framed}}
 
 %\raggedright
@@ -84,7 +87,7 @@
 \vspace{-0.25pt}
 \setlength{\fboxsep}{10pt}
 \setlength{\fboxrule}{0pt}
-\colorbox{amuBlue}{\makebox[8.25in][l]{\hfill \shortstack[r]{\fontsize{36}{36}\rmfamily\color{white} \@title\\%
+\colorbox{aleonardiPurple}{\makebox[8.25in][l]{\hfill \shortstack[r]{\fontsize{36}{36}\rmfamily\color{white} \@title\\%
 \fontsize{24}{24}\rmfamily\color{white} \subtitle}}}%
 \setlength{\fboxsep}{0pt}
 \vspace{-8.5pt}
@@ -103,7 +106,7 @@
 \rhead{\rmfamily \Date}
 \lfoot{\rmfamily \subtitle}
 \rfoot{\rmfamily Page \thepage}
-{\Large \color{amuBlue} Executive Summary}\\ \vspace{12pt}}
+{\Large \color{aleonardiPurple} Executive Summary}\\ \vspace{12pt}}
 {\pagebreak}
 
 
@@ -132,12 +135,13 @@
 \definecolor{cpiOrange}{RGB}{241,85,44}
 \definecolor{cpiGray}{RGB}{106,100,100}
 \definecolor{amuBlue}{RGB}{0,101,189}
+\definecolor{aleonardiPurple}{RGB}{73,10,61}
 
 \renewcommand\section{
 \@startsection {section}{1}{\z@}%
     {-3.5ex \@plus -0.1ex \@minus -.2ex}%
     {1.2ex \@plus.01ex}%
-    {\rmfamily\Large\color{amuBlue}}}
+    {\rmfamily\Large\color{aleonardiPurple}}}
 \renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
     {-3.25ex\@plus -0.1ex \@minus -.2ex}%
     {1.2ex \@plus .01ex}%
@@ -168,7 +172,7 @@
 %HOW THIS PART WORKS IS HIGHLY MYSTERIOUS TO ME - I STOLE IT (legally)
 
 \newenvironment{framed}% using default \FrameCommand
-  {\color{amuBlue} \MakeFramed {\advance\hsize-\width \FrameRestore}}%
+  {\color{aleonardiPurple} \MakeFramed {\advance\hsize-\width \FrameRestore}}%
   {\endMakeFramed}
 
 \chardef\FrameRestore=\catcode`\| % for debug
