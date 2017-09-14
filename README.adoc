@@ -15,7 +15,6 @@ https://www.overleaf.com/latex/templates/climate-policy-initiative-report-templa
 * Concordance des temps
 * Retaper pour que ce soit moins verbeux
 * Vérifier capitalisation des mots (e.g. git en minuscules sauf début de phrase)
-* Faire concorder les couleurs
 * "push" et autres anglicismes => tout mettre en italique ou tout enlever
 * regarder si j'ai pas mis Java 8 par erreur en parlant du projet Java
 * Mettre quelques screenshots de l'interface de GitLab-CI quand je le présente
