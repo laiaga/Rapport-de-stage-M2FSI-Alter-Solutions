@@ -55,7 +55,7 @@ Ensuite, déployer et configurer une application est un procédé lourd qui peut
 		RUN dpkg -i mysql-apt-config_${mysql_apt_version}_all.deb
 		RUN apt-get update -yqq
 		RUN apt-get install --assume-yes mysql-client		
-\end{lstlisting}
+	\end{lstlisting}
 \end{minipage}
 
 C'est la deuxième approche que j'ai conservée (voir le code de l'image en question dans le listing~\ref{lst:dockerfile}), mais non sans avoir testé la première au préalable. Avoir la configuration directement dans le .yml était source de complexité (appeler un .sh à l'intérieur du .yml pour externaliser de gros blocs de code) et de bugs (de petits changements pouvaient entraîner des résultats inattendus, surtout compte tenu du fait que nous étions plusieurs à intervenir sur le .yml).
@@ -98,7 +98,7 @@ La dernière étape était de générer, et rendre disponible, un rapport pour q
 			paths:
 				# The path to the report has to be specified here to be downloadable 
 			- ./zap-report.xml
-\end{lstlisting}
+	\end{lstlisting}
 \end{minipage}
 
 Dans l'interface web de GitLab, le détail des résultats des builds sont visibles dans une page à part où le rapport peut-être téléchargé (l'icône entourée en rouge dans la figure~\ref{fig:gitlab_build_recap}).
@@ -140,5 +140,5 @@ On peut résumer mon intervention en trois points importants :
 				<<: *maven_clean_install
 				only:
 					- develop
-\end{lstlisting}
+	\end{lstlisting}
 \end{minipage}

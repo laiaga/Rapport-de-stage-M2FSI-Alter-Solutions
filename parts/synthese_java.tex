@@ -1,6 +1,104 @@
 \section{Synthèse du développement Java}
 \label{sec:synthese_java}
-En termes de temps investi, le développement Java était à peu près équivalent à l'intégration continue dans mon stage. Le travail effectué sera plus court à synthétiser cependant, en ce sens qu'il se rapproche plus à ce que j'ai pu connaître de Java au cours de ma formation. 
+En termes de temps investi, le développement Java était à peu près équivalent à l'intégration continue dans mon stage. Le travail effectué sera plus court à synthétiser cependant, en ce sens qu'il se rapproche plus à ce que j'ai pu connaître de Java au cours de ma formation.
 
-\subsection{Méthodologie}
-\subsection{Travail effectué}
+\subsection{Rappel du contexte}
+J'ai travaillé sur plusieurs projets en Java, mais il n'y en a qu'un où mon intervention n'a pas été anecdotique : un projet de gestion de tests de voiture pour un constructeur automobile. Le client avait utilisé pendant longtemps un middleware propriétaire pour la communication client/serveur, et avait décidé de changer pour ActiveMQ en même temps que de changer de prestataire pour le développement du logiciel (c'est à cette occasion qu'Alter Frame a récupéré le contrat).
+
+La solution initiale était Notify (je n'ai pas réussi à trouver de documentation là-dessus), mais celle-ci avait déjà disparu à mon arrivée sur le projet. En revanche, ActiveMQ n'était pas encore pleinement fonctionnel, son intégration ayant entraîné des régressions et des bugs nouveaux.
+
+Malgré cela, ce changement était utile d'une part pour l'économie du prix de la licence (Apache ActiveMQ est librement distribué sous licence Apache 2.0... sans surprise) et d'autre part pour profiter de la stabilité d'une solution plus largement adoptée et maintenue.
+
+En plus du développement à proprement parler, j'ai au à créer un installeur pour le logiciel en question, ce qui s'est avéré beaucoup moins trivial que ce que j'avais tout d'abord anticipé.
+
+\subsection{ActiveMQ}
+L'intégration d'ActiveMQ à un projet Java est simple : un des interlocuteurs crée une connexion, un message qui doit nécessairement avoir une destination, et un producteur qui est le processus qui va se charger de l'envoi à proprement parler. Les actions sont presque identiques pour le deuxième interlocuteur, excepté que celui-ci crée un consommateur\cite{activemq_intro}.
+
+L'avantage du système de queue d'ActiveMQ est que le producteur et le receveur n'ont pas besoin d'être disponibles en même temps, le \textit{broker} (le daemon qui reçoit et  transmet les messages) les garde en mémoire jusqu'à ce qu'ils soient consommés. C'est la destination qui sert à savoir qui reçoit quoi : elle correspond à une queue, quand un expéditeur renseigne cette destination un message est ajouté à la file et quand c'est un consommateur, un message est retiré de la file (c'est un modèle FIFO).
+
+\begin{minipage}{\linewidth}
+	\begin{lstlisting}[language=Java, caption="Un exemple écourté d'échange de messages \textit{via} ActiveMQ", label={lst:activemq_ex}]
+  public static class HelloWorldProducer implements Runnable {
+    public void run() {
+        try {
+            // Create a ConnectionFactory
+            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
+
+            // Create a Connection
+            Connection connection = connectionFactory.createConnection();
+            connection.start();
+
+            // Create a Session
+            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+            // Create the destination (Topic or Queue)
+            Destination destination = session.createQueue("TEST.FOO");
+
+            // Create a MessageProducer from the Session to the Topic or Queue
+            MessageProducer producer = session.createProducer(destination);
+            producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+
+            // Create a messages
+            String text = "Hello world! From: " + Thread.currentThread().getName() + " : " + this.hashCode();
+            TextMessage message = session.createTextMessage(text);
+
+            // Tell the producer to send the message
+            System.out.println("Sent message: "+ message.hashCode() + " : " + Thread.currentThread().getName());
+            producer.send(message);
+
+            // Clean up
+            session.close();
+            connection.close();
+        }
+        catch (Exception e) {
+            System.out.println("Caught: " + e);
+            e.printStackTrace();
+        }
+    }
+}
+
+public static class HelloWorldConsumer implements Runnable, ExceptionListener {
+    public void run() {
+        try {
+
+            // Create a ConnectionFactory
+            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
+
+            // Create a Connection
+            Connection connection = connectionFactory.createConnection();
+            connection.start();
+
+            connection.setExceptionListener(this);
+
+            // Create a Session
+            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+            // Create the destination (Topic or Queue)
+            Destination destination = session.createQueue("TEST.FOO");
+
+            // Create a MessageConsumer from the Session to the Topic or Queue
+            MessageConsumer consumer = session.createConsumer(destination);
+
+            // Wait for a message
+            Message message = consumer.receive(1000);
+
+            if (message instanceof TextMessage) {
+                TextMessage textMessage = (TextMessage) message;
+                String text = textMessage.getText();
+                System.out.println("Received: " + text);
+            } else {
+                System.out.println("Received: " + message);
+            }
+
+            consumer.close();
+            session.close();
+            connection.close();
+        } catch (Exception e) {
+            System.out.println("Caught: " + e);
+            e.printStackTrace();
+        }
+    }
+\end{lstlisting}
+\end{minipage}
+
+\subsection{Création d'un installeur}
