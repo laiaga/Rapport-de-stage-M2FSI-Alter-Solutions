@@ -1,4 +1,3 @@
-\usepackage{color} %include colors
 \usepackage[T1]{fontenc} %include font support
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern} %make fonts look better
@@ -136,6 +135,19 @@
 \definecolor{cpiGray}{RGB}{106,100,100}
 \definecolor{amuBlue}{RGB}{0,101,189}
 \definecolor{aleonardiPurple}{RGB}{73,10,61}
+
+% Pattern for pgf plot using custom color
+\pgfdeclarepatterninherentlycolored{horizontal lines Purple} % define name of pattern here
+{\pgfpointorigin}{\pgfpoint{100pt}{4pt}}
+{\pgfpoint{100pt}{4pt}}
+{
+  \pgfsetfillcolor{aleonardiPurple!90} % set first colour
+  \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{100pt}{2.5pt}}
+  \pgfusepath{fill}
+  \pgfsetfillcolor{aleonardiPurple!90} % set second colour
+  \pgfpathrectangle{\pgfpoint{0pt}{2pt}}{\pgfpoint{100pt}{2.5pt}}
+  \pgfusepath{fill}
+}
 
 \renewcommand\section{
 \@startsection {section}{1}{\z@}%
