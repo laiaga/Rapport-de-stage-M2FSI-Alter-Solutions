@@ -2132,4 +2132,37 @@
     <bcf:citekey order="10">sonarqube</bcf:citekey>
     <bcf:citekey order="11">zap</bcf:citekey>
     <bcf:citekey order="12">owasp</bcf:citekey>
-    <bcf:citeke
+    <bcf:citekey order="13">zap_git</bcf:citekey>
+    <bcf:citekey order="14">burp</bcf:citekey>
+    <bcf:citekey order="15">docker</bcf:citekey>
+    <bcf:citekey order="16">docker_store</bcf:citekey>
+    <bcf:citekey order="17">docker_use_cases</bcf:citekey>
+    <bcf:citekey order="18">kubernetes</bcf:citekey>
+    <bcf:citekey order="19">swarm</bcf:citekey>
+    <bcf:citekey order="20">yaml</bcf:citekey>
+    <bcf:citekey order="21">yaml_refcard</bcf:citekey>
+    <bcf:citekey order="22">squale</bcf:citekey>
+    <bcf:citekey order="23">soapui</bcf:citekey>
+    <bcf:citekey order="24">jmeter</bcf:citekey>
+    <bcf:citekey order="25">gitlab_ci_workflow</bcf:citekey>
+    <bcf:citekey order="26">gitlab_docker_build</bcf:citekey>
+    <bcf:citekey order="27">docker_sec</bcf:citekey>
+    <bcf:citekey order="28">zap_wiki_docker</bcf:citekey>
+    <bcf:citekey order="29">zap_depot_docker</bcf:citekey>
+    <bcf:citekey order="30">zap_maven</bcf:citekey>
+    <bcf:citekey order="31">yaml_anchors</bcf:citekey>
+    <bcf:citekey order="32">yaml_variables</bcf:citekey>
+    <bcf:citekey order="33">activemq</bcf:citekey>
+    <bcf:citekey order="34">activemq_intro</bcf:citekey>
+    <bcf:citekey order="35">nsis</bcf:citekey>
+    <bcf:citekey order="36">nsis_doc</bcf:citekey>
+    <bcf:citekey order="37">threat_intell_wiki</bcf:citekey>
+  </bcf:section>
+  <bcf:sortlist section="0" name="none/global/" type="entry" sortscheme="none" sortnamekeyscheme="global" labelprefix="">
+  <bcf:sorting>
+    <bcf:sort order="1">
+      <bcf:sortitem order="1">citeorder</bcf:sortitem>
+    </bcf:sort>
+  </bcf:sorting>
+  </bcf:sortlist>
+</bcf:controlfile>
