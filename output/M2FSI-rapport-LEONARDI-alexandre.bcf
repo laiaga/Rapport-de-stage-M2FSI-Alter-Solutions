@@ -2152,13 +2152,9 @@
     <bcf:citekey order="30">yaml_anchors</bcf:citekey>
     <bcf:citekey order="31">yaml_variables</bcf:citekey>
     <bcf:citekey order="32">activemq_intro</bcf:citekey>
-    <bcf:citekey order="33">swing_wiki</bcf:citekey>
-    <bcf:citekey order="34">activemq</bcf:citekey>
-    <bcf:citekey order="35">mybatis</bcf:citekey>
-    <bcf:citekey order="36">mybatis_prez</bcf:citekey>
-    <bcf:citekey order="37">vbscript</bcf:citekey>
-    <bcf:citekey order="38">jmeter</bcf:citekey>
-    <bcf:citekey order="39">nmon</bcf:citekey>
+    <bcf:citekey order="33">nsis</bcf:citekey>
+    <bcf:citekey order="34">nsis_doc</bcf:citekey>
+    <bcf:citekey order="35">threat_intell_wiki</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="none/global/" type="entry" sortscheme="none" sortnamekeyscheme="global" labelprefix="">
   <bcf:sorting>

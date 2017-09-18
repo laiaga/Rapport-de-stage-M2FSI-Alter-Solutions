@@ -9,7 +9,6 @@ Stage de fin d'étude de http://masterinfo.univ-mrs.fr/FSI.html[master FSI].
 https://www.overleaf.com/latex/templates/climate-policy-initiative-report-template/kjfjzrcjgtqg#.WTVoYKJVtv0[Le template est l'oeuvre d'Andrew Hobbs disponible sous licence Creative Commons.]
 
 .TODO List
-* Changer screenshot de ZAP par 1 pris en cours d'utilisation sur DVWA (par exemple) => plus réaliste
 * Vérifier que tous les acronymes sont expliqués lors de leur première apparition (et pas après)
 * Vérifier que tous les logiciels/frameworks/etc ont un lien lors de leur première apparition (et pas après)
 * Concordance des temps
@@ -17,8 +16,4 @@ https://www.overleaf.com/latex/templates/climate-policy-initiative-report-templa
 * Vérifier capitalisation des mots (e.g. git en minuscules sauf début de phrase)
 * "push" et autres anglicismes => tout mettre en italique ou tout enlever
 * regarder si j'ai pas mis Java 8 par erreur en parlant du projet Java
-* Mettre quelques screenshots de l'interface de GitLab-CI quand je le présente
-* Changer les polices
-
-.Crédits :
-* Icon made by https://www.flaticon.com/authors/situ-herrera[Situ Herrera] from https://www.flaticon.com[www.flaticon.com].
+* Vérifier que les guillemets sont tous français
