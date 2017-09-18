@@ -1,6 +1,6 @@
 \section{Synthèse de l'audit}
 \label{sec:synthese_audit}
-Audit réalisé pour une compagnie travaillant dans le monde de l'assurance : celui-ci n'était pas prévu dans le sujet initial et entre dans la catégorie des \og interventions en fonction du besoin \fg. L'application auditée était à la fois l'intranet de l'entreprise et un progiciel destiné au monde de l'assurance, et l'audit recouvrait plusieurs aspects :
+Audit réalisé pour une compagnie travaillant dans le monde de l'assurance : celui-ci n'était pas prévu dans le sujet initial et entre dans la catégorie des \og interventions en fonction du besoin \fg{}. L'application auditée était à la fois l'intranet de l'entreprise et un progiciel destiné au monde de l'assurance, et l'audit recouvrait plusieurs aspects :
 \begin{itemize}
   \item la sécurité, qui est importante aux yeux du client vu que la confiance de leurs propres clients en la sécurité des informations confidentielles est capitale pour assurer leur fidélité ;
   \item la performance, en effet il s'agit de la troisième itération de l'audit réalisée par Alter Frame et une des motivations initiales était que l'application était extrêmement lente (une page pouvait prendre plusieurs secondes à se charger dans des conditions normales) ;
@@ -10,7 +10,7 @@ Audit réalisé pour une compagnie travaillant dans le monde de l'assurance : ce
 Naturellement, en parallèle de l'aspect technique cet audit a impliqué une part non négligeable de rédaction de rapport et de documentation à l'intention des futurs auditeurs.
 
 \subsection{Sécurité}
-Le temps alloué à cette partie de l'audit n'a pas permis de mener un audit de sécurité complet comme ce que nous avons pu voir en projet. En pratique, il s'est plutôt agi d'utiliser les fonctionnalité proposées par ZAP pour avoir un survol des failles éventuelles de l'application, et de vérifier celles-ci \og à la main \fg quand c'était possible. 
+Le temps alloué à cette partie de l'audit n'a pas permis de mener un audit de sécurité complet comme ce que nous avons pu voir en projet. En pratique, il s'est plutôt agi d'utiliser les fonctionnalité proposées par ZAP pour avoir un survol des failles éventuelles de l'application, et de vérifier celles-ci \og à la main \fg{} quand c'était possible. 
 
 L'avantage de cette approche est que ZAP, une fois configuré et lancer dans une série de scans, peut être laissé à travailler pendant que nous travaillions sur d'autres aspects de l'audit. 
 
@@ -81,7 +81,7 @@ Il est néanmoins possible de présenter ce que le client demande précisément 
   \item analyser certains aspects du code qui ne correspondent pas à un problème précis mais à des notions plus larges, telles que la duplication de code ou les accès à la base de données. 
 \end{itemize}
 
-Pour l'instant, nous avons travaillé sur le point précis des duplications de code, avec SonarQube. L'outil propose, parmi ses règles par défaut, de trouver les blocs de code dupliqués dans le code. La capture~\ref{fig:sonar_res} montre une partie des résultats : l'application auditée est séparée en deux parties, mais la partie \og interface \fg ici est la plus concernée par les duplications. 
+Pour l'instant, nous avons travaillé sur le point précis des duplications de code, avec SonarQube. L'outil propose, parmi ses règles par défaut, de trouver les blocs de code dupliqués dans le code. La capture~\ref{fig:sonar_res} montre une partie des résultats : l'application auditée est séparée en deux parties, mais la partie \og interface \fg{} ici est la plus concernée par les duplications. 
 
 \begin{figure}
   \centering

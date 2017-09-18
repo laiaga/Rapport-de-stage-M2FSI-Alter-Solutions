@@ -3,11 +3,11 @@
 En termes de temps investi, le développement Java était à peu près équivalent à l'intégration continue dans mon stage. Le travail effectué sera plus court à synthétiser cependant, en ce sens qu'il se rapproche plus à ce que j'ai pu connaître de Java au cours de ma formation.
 
 \subsection{Rappel du contexte}
-J'ai travaillé sur plusieurs projets en Java, mais il n'y en a qu'un où mon intervention n'a pas été anecdotique : un projet de gestion de tests de voiture pour un constructeur automobile. Le client avait utilisé pendant longtemps un middleware propriétaire pour la communication client/serveur, et avait décidé de changer pour ActiveMQ en même temps que de changer de prestataire pour le développement du logiciel (c'est à cette occasion qu'Alter Frame a récupéré le contrat).
+J'ai travaillé sur plusieurs projets en Java, mais il n'y en a qu'un où mon intervention n'a pas été anecdotique : un projet de gestion de tests de voiture pour un constructeur automobile. Le client avait utilisé pendant longtemps un middleware propriétaire pour la communication client/serveur, et avait décidé de changer pour ActiveMQ\cite{activemq} en même temps que de changer de prestataire pour le développement du logiciel (c'est à cette occasion qu'Alter Frame a récupéré le contrat).
 
 La solution initiale était Notify (je n'ai pas réussi à trouver de documentation là-dessus), mais celle-ci avait déjà disparu à mon arrivée sur le projet. En revanche, ActiveMQ n'était pas encore pleinement fonctionnel, son intégration ayant entraîné des régressions et des bugs nouveaux.
 
-Malgré cela, ce changement était utile d'une part pour l'économie du prix de la licence (Apache ActiveMQ est librement distribué sous licence Apache 2.0... sans surprise) et d'autre part pour profiter de la stabilité d'une solution plus largement adoptée et maintenue.
+Malgré cela, ce changement était utile d'une part pour l'économie du prix de la licence (Apache ActiveMQ est librement distribué sous licence Apache 2.0) et d'autre part pour profiter de la stabilité d'une solution plus largement adoptée et maintenue.
 
 En plus du développement à proprement parler, j'ai au à créer un installeur pour le logiciel en question, ce qui s'est avéré beaucoup moins trivial que ce que j'avais tout d'abord anticipé.
 
@@ -82,7 +82,7 @@ public static class HelloWorldConsumer implements Runnable, ExceptionListener {
 \end{lstlisting}
 \end{minipage}
 
-La mécanique de départ est assez simple et c'est tout l'intérêt de cet outil ; la vraie difficulté a résidé dans la recherche de toutes les utilisations qui étaient faites de l'ancienne librairie Notify, et leur remplacement sans générer d'effet de bord ; plus facile à dire qu'à faire comme toujours quand il s'agit de refactorer du code !
+La mécanique de départ est assez simple et c'est tout l'intérêt de cet outil ; la vraie difficulté a résidé dans la recherche de toutes les utilisations qui étaient faites de l'ancienne librairie Notify, et leur remplacement sans générer d'effet de bord ; plus facile à dire qu'à faire comme toujours quand il s'agit de refactorer du code.
 
 Il est difficile d'isoler un exemple de code sur lequel j'ai travaillé, tant cela a été de petites retouches à différents endroits des sources, suivis de longues sessions de tests avec le chef de projet pour exposer toutes les conséquences des modifications et, s'il y en avait d'inattendues, les corriger. Voici tout de même un exemple notable : listings~\ref{lst:lock_un} et~\ref{lst:lock_deux}.
 
@@ -107,9 +107,7 @@ public void onMessage(Message rawMsg) {
                     error = msg.getNextString();
                     CacheClient.getClientForNotify().notifyUnlockFromServer(error, callIdToUnlock, callId); 
                     break;
-
                 // ...
-
             }
         case ALL_TYPE :
             switch (duo.getSecond()) {
@@ -119,13 +117,9 @@ public void onMessage(Message rawMsg) {
                     // fournit le serveur
                     updateLocalLockMap(msg);
                     break;
-
                 // ...
-
             }
-
         // ...
-                
     }
 }
     \end{lstlisting}
@@ -160,15 +154,15 @@ Le logiciel en question gère la modification d'affaires, c'est-à-dire du réca
 Quand un client essaie d'accéder à une telle ressource, on vérifie la présence de la ressource dans la \textit{map} ; si elle est présente l'utilisateur voit un message d'erreur apparaître et sinon, il ouvre la ressource et envoie simultanément un \textit{lock} au serveur qui va le diffuser à tous les utilisateurs connectés en plus de mettre à jour sa propre \textit{map} des verrous pour pouvoir la transmettre aux nouveaux utilisateurs qui se connectent. 
 
 \subsection{Création d'un installeur}
-Il ne s'agit là pas de Java mais de NSIS\cite{nsis} : un outil open source pour générer des (dés)installeurs sous Windows, indépendants du langage de l'application à installer. NSIS est également le nom du langage de script utilisé pour créer l'installeur ; complexe mais d'une grande flexibilité, il couvre un large éventail de fonctionnalités et a surtout une documentation de qualité, claire et détaillée\cite{nsis_doc}. 
+Il ne s'agit là pas de Java mais de NSIS\cite{nsis} : un outil \textit{open source} pour générer des (dés)installeurs sous Windows, indépendants du langage de l'application à installer. NSIS est également le nom du langage de script utilisé pour créer l'installeur ; complexe mais d'une grande flexibilité, il couvre un large éventail de fonctionnalités et a surtout une documentation de qualité, claire et détaillée\cite{nsis_doc}. 
 
 Un résumé de la construction d'un script NSIS : un installeur est composé de page, ce sont les différentes fenêtres qui s'affichent au cours de l'installation. NSIS propose les plus classiques par défaut (e.g. choisir le chemin d'installation) et des pages personnalisées peuvent être créées. L'installeur affiche les pages dans l'ordre dans lequel elles sont déclarées dans le script. 
 
-Chaque page comporte une ou plusieurs fonctions qui détaillent son fonctionnement, peuvent annuler l'affichage de la page ou empêcher l'utilisateur de passer à la suivante sous certaines conditions (e.g. \og Vous devez fermer l'application avant de la désinstaller \fg).
+Chaque page comporte une ou plusieurs fonctions qui détaillent son fonctionnement, peuvent annuler l'affichage de la page ou empêcher l'utilisateur de passer à la suivante sous certaines conditions (e.g. \og Vous devez fermer l'application avant de la désinstaller \fg{}).
 
 Enfin, des sections sont appelées pour l'installation à proprement parler des éléments. La différence avec les fonctions est que ces dernières définissent le comportement de la page d'un point de vue GUI. Les sections vont modifier le registre, copier des fichiers, créer des raccourcis, etc. La page par défaut \verb|COMPONENTS| permet à l'utilisateur de choisir les composants qu'il installe, chaque composant correspond à une section du même nom, et la page par défaut \verb|INSTFILES| installe chaque section correspondant à un composant sélectionné. 
 
-Des exemples typiques sont proposés avec l'installation de NSIS, l'installation des composants principaux de l'application n'a donc pas demandé de grandes modifications excepté le chemin vers les différents éléments. Un composant plus intéressant est la page proposant de désinstaller une version précédente de l'application avant d'installer la version actuelle (cf. capture d'écran~\ref{nsis_unins}).
+Des exemples typiques sont proposés avec l'installation de NSIS, l'installation des composants principaux de l'application n'a donc pas demandé de grandes modifications excepté le chemin vers les différents éléments. Un composant plus intéressant est la page proposant de désinstaller une version précédente de l'application avant d'installer la version actuelle (cf. capture d'écran~\ref{fig:nsis_unins}).
 
 \begin{figure}
     \centering
